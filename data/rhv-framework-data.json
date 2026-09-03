@@ -1,0 +1,101 @@
+{
+  "$description": "Static reference snapshot of the Revenue Health Matrix framework: 5 parent systems, each with 10 subsystems, each with 4 evaluation areas. Live source of truth is Supabase (revhealth2 schema) — see components/revenue-matrix-explorer/README.md.",
+  "systems": [
+    {
+      "label": "Positioning",
+      "code": "POS",
+      "color": "#3B82F6",
+      "soft": "#EAF2FE",
+      "blurb": "How the business defines itself, its market, and its value in the minds of ideal buyers.",
+      "subsystems": [
+        { "name": "Market Position", "areas": ["Category", "Target Market", "Competitive Landscape", "Niche Definition"] },
+        { "name": "Differentiation", "areas": ["Core Message", "Desired Outcome", "Business Value", "Urgency"] },
+        { "name": "Competitive Positioning", "areas": ["Market Alternatives", "Category Owner", "Buyer Perception", "Competitive Threats"] },
+        { "name": "Messaging", "areas": ["Firmographics", "Buying Triggers", "Pain Points", "Decision Makers"] },
+        { "name": "Value Proposition", "areas": ["Customer Problem", "Desired Outcome", "Business Value", "Buying Behavior"] },
+        { "name": "Ideal Customer Profile", "areas": ["Customer Problem", "Desired Outcome", "Business Value", "Buying Behavior"] },
+        { "name": "Offer Strategy", "areas": ["Offer Structure", "Objections", "Motivations", "Buying Behavior"] },
+        { "name": "Pricing Strategy", "areas": ["Pricing Alignment", "Margin Health", "Value Perception", "Competitive Fit"] },
+        { "name": "Brand Identity", "areas": ["Content Mix", "Distribution", "Consistency", "Customer Language"] },
+        { "name": "Go-to-Market Strategy", "areas": ["Pillars", "Content Mix", "Distribution", "Consistency"] }
+      ]
+    },
+    {
+      "label": "Authority",
+      "code": "AUTH",
+      "color": "#10B981",
+      "soft": "#E7F8F1",
+      "blurb": "How the business builds credibility, trust, and recognition in its market.",
+      "subsystems": [
+        { "name": "Content Strategy", "areas": ["Pillars", "Content Mix", "Distribution", "Consistency"] },
+        { "name": "Content Operations", "areas": ["Founder Visibility", "Industry Perspective", "Expertise Signals", "Market Influence"] },
+        { "name": "Thought Leadership", "areas": ["Founder Visibility", "Industry Perspective", "Expertise Signals", "Market Influence"] },
+        { "name": "Industry Authority", "areas": ["Relevance", "Recency", "Statement", "Accessibility"] },
+        { "name": "Testimonials", "areas": ["Diversity & Coverage", "Placement & Activation", "Reviews", "Awards"] },
+        { "name": "SEO", "areas": ["Technical SEO", "Content SEO", "Authority Signals", "Search Visibility"] },
+        { "name": "Educational Content", "areas": ["Buyer Journey Coverage", "Depth & Expertise", "Clarity", "Relevance"] },
+        { "name": "Email Nurture", "areas": ["Segmentation", "Automation", "Engagement", "Conversion Support"] },
+        { "name": "Brand Reputation", "areas": ["Market Sentiment", "Online Presence", "Review Coverage", "Trust Signals"] },
+        { "name": "Sales Enablement Content", "areas": ["Battle Cards", "Proposal & Pitch Assets", "One-Pagers", "Objection Handling"] }
+      ]
+    },
+    {
+      "label": "Conversion",
+      "code": "CONV",
+      "color": "#E11D48",
+      "soft": "#FCEAEE",
+      "blurb": "How the business attracts, engages, and converts prospects into customers.",
+      "subsystems": [
+        { "name": "Demand Generation", "areas": ["Awareness Creation", "Channel Strategy", "Message-Market Fit", "Demand Measurement"] },
+        { "name": "Website Conversion", "areas": ["Messaging Alignment", "Conversion Architecture", "User Experience", "Trust & Credibility"] },
+        { "name": "Paid Media", "areas": ["Audience Targeting", "Creative Quality", "ROI & Attribution", "Scaling Discipline"] },
+        { "name": "Referral Programs", "areas": ["Program Structure", "Incentive Design", "Activation & Follow-Up", "Performance Tracking"] },
+        { "name": "Social & Community", "areas": ["Community Building", "Platform Strategy", "Engagement Quality", "Community-to-Pipeline Conversion"] },
+        { "name": "Outbound", "areas": ["Target List Quality", "Sequencing & Cadence", "Personalization", "Reply-to-Meeting Rate"] },
+        { "name": "Events & Partnerships", "areas": ["Event Strategy", "Partnership Quality", "Activation & Follow-Up", "ROI Measurement"] },
+        { "name": "Lead Generation (MQL)", "areas": ["Source Mix", "Lead Volume", "Lead Quality", "Lead Velocity"] },
+        { "name": "Lead Conversion (SQL)", "areas": ["MQL Definition", "Qualification Criteria", "Handoff Process", "Feedback Loop"] },
+        { "name": "Sales Intake", "areas": ["Friction Reduction", "Speed-to-Lead", "Routing & Assignment", "Show Rate Optimization"] }
+      ]
+    },
+    {
+      "label": "Lifecycle",
+      "code": "LFC",
+      "color": "#8B5CF6",
+      "soft": "#F1ECFE",
+      "blurb": "How the business manages the full customer journey from pipeline to retention.",
+      "subsystems": [
+        { "name": "Sales Process", "areas": ["Defined Stages", "Consistency & Accountability", "Proposal & Close Process", "Conversion Rate Visibility"] },
+        { "name": "CRM Workflows", "areas": ["Workflow Design", "Data Integrity", "Adoption", "Process Impact"] },
+        { "name": "Lead Qualification", "areas": ["Qualification Criteria", "Disqualification Discipline", "Automation & Scoring", "Feedback to Marketing"] },
+        { "name": "Opportunity Management", "areas": ["Pipeline Hygiene", "Deal Velocity", "Risk Management", "Forecast Accuracy"] },
+        { "name": "Customer Onboarding", "areas": ["Expectation Setting", "Handoff Quality", "Time-to-Value", "Adoption"] },
+        { "name": "Customer Success", "areas": ["Proactive Communication", "Health Monitoring", "At-Risk Detection", "Outcome Delivery"] },
+        { "name": "Client Communication", "areas": ["Cadence", "Transparency", "Documentation", "Responsiveness"] },
+        { "name": "Retention", "areas": ["Churn Rate", "Renewal Process", "Satisfaction Measurement", "Expansion Readiness"] },
+        { "name": "Upsell & Expansion", "areas": ["Upsell Process", "Cross-Sell Process", "Referral Generation", "Lifetime Value Management"] },
+        { "name": "Operational Standards", "areas": ["SOPs & Documentation", "Process Ownership", "Systems Adoption", "Scalability Readiness"] }
+      ]
+    },
+    {
+      "label": "Visibility",
+      "code": "VIS",
+      "color": "#F59E0B",
+      "soft": "#FEF3E2",
+      "blurb": "How the business measures, tracks, and makes decisions from performance data.",
+      "subsystems": [
+        { "name": "KPI Frameworks", "areas": ["Metric Selection", "Ownership", "Consistency", "Strategic Alignment"] },
+        { "name": "Revenue Reporting", "areas": ["Accuracy", "Accessibility", "Timeliness", "Trustworthiness"] },
+        { "name": "Forecasting", "areas": ["Process", "Accuracy", "Confidence", "Usage"] },
+        { "name": "Attribution", "areas": ["Channel Tracking", "Source Accuracy", "Decision Support", "Completeness"] },
+        { "name": "Dashboarding", "areas": ["Visibility", "Adoption", "Actionability", "Executive Alignment"] },
+        { "name": "Operational Intelligence", "areas": ["Cross-Department Insights", "Leading Indicators", "Decision Readiness", "Accountability Infrastructure"] },
+        { "name": "Data Quality", "areas": ["Completeness", "Consistency", "Accuracy", "Governance"] },
+        { "name": "Pipeline Visibility", "areas": ["Stage Accuracy", "Bottleneck Visibility", "Deal Risk", "Trend Analysis"] },
+        { "name": "Business Planning", "areas": ["Strategic Alignment", "Capacity Planning", "Scenario Modeling", "Goal Tracking"] },
+        { "name": "Risk & Alerts", "areas": ["Anomaly Detection", "Threshold Alerts", "Risk Concentration Visibility", "Early Warning Cadence"] }
+      ]
+    }
+  ],
+  "$note": "This is a condensed reference (names + areas only). The full framework with questions, definitions, evidence, goodLooksLike, and failureModes per area lives in the Marketplace Maven Divi Theme claude.ai project as the canonical rhv-framework-data.json — that copy is the one to treat as authoritative for content; this repo copy is for design/dev reference."
+}

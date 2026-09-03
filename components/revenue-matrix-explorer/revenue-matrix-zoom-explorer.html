@@ -1,0 +1,234 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<div id="rmz-root" style="font-family:Inter,-apple-system,sans-serif;max-width:760px;margin:0 auto;"></div>
+<style>
+  #rmz-root .rmz-crumb{display:flex;align-items:center;gap:6px;font-size:13px;margin-bottom:14px;color:#666}
+  #rmz-root .rmz-crumb span.clickable{cursor:pointer}
+  #rmz-root .rmz-stage{position:relative;width:100%;height:540px;overflow:hidden;border-radius:16px;background:#FAFAF8;border:1px solid #E5E3DC}
+  #rmz-root .rmz-layer{position:absolute;inset:0}
+  #rmz-root .rmz-node{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;transition:transform .15s ease;box-sizing:border-box}
+  #rmz-root .rmz-node:hover{transform:scale(1.05)}
+  #rmz-root .rmz-area-card{position:absolute;border-radius:14px;text-align:center;box-sizing:border-box;cursor:default;transition:box-shadow .15s ease}
+  #rmz-root .rmz-area-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.12)}
+  #rmz-root .rmz-hint{position:absolute;font-size:12px;color:#999;text-align:center}
+  #rmz-root .rmz-loading{padding:60px;text-align:center;color:#999;font-size:14px}
+  #rmz-root .rmz-tooltip{position:fixed;max-width:280px;background:#1a1a1a;color:#fff;font-size:12px;line-height:1.5;padding:10px 12px;border-radius:8px;pointer-events:none;z-index:9999;opacity:0;transition:opacity .12s ease;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+  #rmz-root .rmz-tooltip.visible{opacity:1}
+  @keyframes rmzZoomIn{from{transform:scale(.12);opacity:0}to{transform:scale(1);opacity:1}}
+  @keyframes rmzZoomOut{from{transform:scale(6);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
+<script>
+(function(){
+  // Live Supabase source — single source of truth, shared with the assessment app.
+  var SUPABASE_URL = "https://zvgijxpfsiivkoyfhpcp.supabase.co";
+  var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp2Z2lqeHBmc2lpdmtveWZocGNwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1MjI3NTgsImV4cCI6MjA5NjA5ODc1OH0.3YMVxJqRtEkWHjOdvbhVbPGkeY0e6Ir6khkRwDj-URc";
+  var DATA_URL = SUPABASE_URL + "/rest/v1/parent_systems"
+    + "?select=code,name,description,why_it_matters,color_hex,sort_order,"
+    + "child_systems(code,name,description,why_it_matters,sort_order,"
+    + "evaluation_areas(name,why_it_matters,sort_order))"
+    + "&order=sort_order"
+    + "&child_systems.order=sort_order"
+    + "&child_systems.evaluation_areas.order=sort_order";
+
+  var state = { level:0, sysIdx:null, childIdx:null, data:null };
+  var root = document.getElementById("rmz-root");
+  root.innerHTML = '<div class="rmz-loading">Loading framework…</div>';
+
+  function normalize(rows){
+    // Map Supabase's raw column names onto the shape the renderer expects.
+    return rows.map(function(s){
+      return {
+        code: s.code, label: s.name, blurb: s.why_it_matters,
+        color: s.color_hex,
+        soft: hexToSoft(s.color_hex),
+        subsystems: (s.child_systems || []).map(function(cs){
+          return {
+            name: cs.name, blurb: cs.why_it_matters,
+            areas: (cs.evaluation_areas || []).map(function(ea){
+              return { name: ea.name, blurb: ea.why_it_matters };
+            })
+          };
+        })
+      };
+    });
+  }
+  function hexToSoft(hex){
+    // HSL-based tint: preserves hue so each system stays visibly distinct,
+    // instead of collapsing toward the same pale off-white.
+    if(!hex) return "#F5F5F5";
+    var r = parseInt(hex.slice(1,3),16)/255, g = parseInt(hex.slice(3,5),16)/255, b = parseInt(hex.slice(5,7),16)/255;
+    var max = Math.max(r,g,b), min = Math.min(r,g,b);
+    var h, s, l = (max+min)/2;
+    if(max===min){ h = s = 0; }
+    else {
+      var d = max-min;
+      s = l>0.5 ? d/(2-max-min) : d/(max+min);
+      switch(max){
+        case r: h = (g-b)/d + (g<b?6:0); break;
+        case g: h = (b-r)/d + 2; break;
+        case b: h = (r-g)/d + 4; break;
+      }
+      h /= 6;
+    }
+    return "hsl(" + Math.round(h*360) + "," + Math.round(Math.min(s*100,65)) + "%,93%)";
+  }
+
+  var tooltip = document.createElement("div");
+  tooltip.className = "rmz-tooltip";
+  document.body.appendChild(tooltip);
+
+  function showTooltip(e, text){
+    if(!text) return;
+    tooltip.textContent = text;
+    tooltip.classList.add("visible");
+    positionTooltip(e);
+  }
+  function positionTooltip(e){
+    var x = e.clientX + 16, y = e.clientY + 16;
+    var maxX = window.innerWidth - 300, maxY = window.innerHeight - 100;
+    tooltip.style.left = Math.min(x, maxX) + "px";
+    tooltip.style.top = Math.min(y, maxY) + "px";
+  }
+  function hideTooltip(){ tooltip.classList.remove("visible"); }
+
+  fetch(DATA_URL, {
+    headers: {
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+      "Accept-Profile": "revhealth2"
+    }
+  }).then(function(r){
+    if(!r.ok) throw new Error("Supabase request failed: " + r.status);
+    return r.json();
+  }).then(function(rows){
+    state.data = normalize(rows);
+    render();
+  }).catch(function(err){
+    root.innerHTML = '<div class="rmz-loading">Could not load framework data from Supabase.</div>';
+    console.error(err);
+  });
+
+  function polar(cx,cy,r,angleDeg){
+    var a=(angleDeg-90)*(Math.PI/180);
+    return { x: cx + r*Math.cos(a), y: cy + r*Math.sin(a) };
+  }
+
+  function render(dir, originX, originY){
+    var SYSTEMS = state.data;
+    var sys = state.sysIdx!==null ? SYSTEMS[state.sysIdx] : null;
+    var sub = sys && state.childIdx!==null ? sys.subsystems[state.childIdx] : null;
+
+    var crumbHtml = '<div class="rmz-crumb">' +
+      '<span class="'+(state.level!==0?'clickable':'')+'" data-nav="0" style="font-weight:'+(state.level===0?600:400)+';color:'+(state.level===0?'#111':'#666')+'">Revenue Health Matrix</span>';
+    if(sys){
+      crumbHtml += '<span>&rsaquo;</span><span class="'+(state.level!==1?'clickable':'')+'" data-nav="1" style="font-weight:'+(state.level===1?600:400)+';color:'+(state.level===1?sys.color:'#666')+'">'+sys.label+'</span>';
+    }
+    if(sub){
+      crumbHtml += '<span>&rsaquo;</span><span style="font-weight:600;color:'+sys.color+'">'+sub.name+'</span>';
+    }
+    crumbHtml += '</div>';
+
+    var stageHtml = '';
+    if(state.level===0){
+      var cx=340, cy=270, r=180, size=132;
+      SYSTEMS.forEach(function(s,i){
+        var p = polar(cx,cy,r,(360/SYSTEMS.length)*i);
+        stageHtml += '<div class="rmz-node" data-select="'+i+'" data-tip="'+escAttr(s.blurb)+'" style="left:'+(p.x-size/2)+'px;top:'+(p.y-size/2)+'px;width:'+size+'px;height:'+size+'px;background:'+s.soft+';border:2px solid '+s.color+';padding:10px">' +
+          '<div style="font-weight:600;font-size:14px;color:'+s.color+'">'+s.label+'</div>' +
+          '<div style="font-size:10px;color:#888;margin-top:4px">10 subsystems</div></div>';
+      });
+      stageHtml += '<div class="rmz-hint" style="left:'+(cx-70)+'px;top:'+(cy-32)+'px;width:140px">Click a system to zoom in</div>';
+    } else if(state.level===1){
+      var cx=340, cy=270, r=215, size=106;
+      stageHtml += '<div class="rmz-node" data-back="1" data-tip="'+escAttr(sys.blurb)+'" style="left:'+(cx-85)+'px;top:'+(cy-85)+'px;width:170px;height:170px;background:'+sys.color+';color:#fff;padding:16px">' +
+        '<div style="font-weight:600;font-size:16px">'+sys.label+'</div>' +
+        '<div style="font-size:11px;opacity:.85;margin-top:6px">'+sys.code+' &middot; 10 subsystems</div>' +
+        '<div style="font-size:10px;opacity:.7;margin-top:8px">Click to zoom out</div></div>';
+      sys.subsystems.forEach(function(s,i){
+        var p = polar(cx,cy,r,(360/sys.subsystems.length)*i);
+        stageHtml += '<div class="rmz-node" data-selectchild="'+i+'" data-tip="'+escAttr(s.blurb)+'" style="left:'+(p.x-size/2)+'px;top:'+(p.y-size/2)+'px;width:'+size+'px;height:'+size+'px;background:'+sys.soft+';border:1.5px solid '+sys.color+';padding:8px">' +
+          '<div style="font-size:12px;font-weight:500;color:#333">'+s.name+'</div></div>';
+      });
+    } else if(state.level===2){
+      var cx=340, cy=270, r=175, size=150;
+      stageHtml += '<div class="rmz-node" data-back="0" data-tip="'+escAttr(sub.blurb)+'" style="left:'+(cx-90)+'px;top:'+(cy-90)+'px;width:180px;height:180px;background:'+sys.color+';color:#fff;padding:16px">' +
+        '<div style="font-size:10px;opacity:.75;text-transform:uppercase;letter-spacing:.5px">'+sys.label+'</div>' +
+        '<div style="font-weight:600;font-size:16px;margin-top:4px">'+sub.name+'</div>' +
+        '<div style="font-size:10px;opacity:.7;margin-top:10px">Click to zoom out</div></div>';
+      sub.areas.forEach(function(area,i){
+        var p = polar(cx,cy,r,90*i+45);
+        stageHtml += '<div class="rmz-area-card" data-tip="'+escAttr(area.blurb)+'" style="left:'+(p.x-size/2)+'px;top:'+(p.y-size/2)+'px;width:'+size+'px;height:'+size+'px;background:'+sys.soft+';border:1.5px solid '+sys.color+';display:flex;align-items:center;justify-content:center;padding:14px">' +
+          '<div style="font-weight:600;font-size:13px;color:'+sys.color+'">'+area.name+'</div></div>';
+      });
+    }
+
+    var anim = dir ? (dir==='in' ? 'rmzZoomIn' : 'rmzZoomOut') : 'none';
+    var origin = (originX!==undefined) ? (originX+'% '+originY+'%') : '50% 50%';
+    root.innerHTML = crumbHtml +
+      '<div class="rmz-stage"><div class="rmz-layer" style="transform-origin:'+origin+';animation:'+anim+' 420ms cubic-bezier(0.22,0.9,0.3,1)">'+stageHtml+'</div></div>';
+
+    attachHandlers();
+  }
+
+  function escAttr(s){
+    return (s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+  }
+
+  function attachHandlers(){
+    var stage = root.querySelector('.rmz-stage');
+    function originFromEvent(e){
+      var rect = stage.getBoundingClientRect();
+      return { x: ((e.clientX-rect.left)/rect.width)*100, y: ((e.clientY-rect.top)/rect.height)*100 };
+    }
+    root.querySelectorAll('[data-tip]').forEach(function(el){
+      var tip = el.getAttribute('data-tip');
+      if(!tip) return;
+      el.addEventListener('mouseenter', function(e){ showTooltip(e, tip); });
+      el.addEventListener('mousemove', positionTooltip);
+      el.addEventListener('mouseleave', hideTooltip);
+    });
+    root.querySelectorAll('[data-select]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        hideTooltip();
+        var o = originFromEvent(e);
+        state.sysIdx = parseInt(el.getAttribute('data-select'),10);
+        state.childIdx = null;
+        state.level = 1;
+        render('in', o.x, o.y);
+      });
+    });
+    root.querySelectorAll('[data-selectchild]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        hideTooltip();
+        var o = originFromEvent(e);
+        state.childIdx = parseInt(el.getAttribute('data-selectchild'),10);
+        state.level = 2;
+        render('in', o.x, o.y);
+      });
+    });
+    root.querySelectorAll('[data-back]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        hideTooltip();
+        var o = originFromEvent(e);
+        var target = parseInt(el.getAttribute('data-back'),10);
+        if(target===0){ state.childIdx=null; state.level=1; }
+        else { state.sysIdx=null; state.childIdx=null; state.level=0; }
+        render('out', o.x, o.y);
+      });
+    });
+    root.querySelectorAll('[data-nav]').forEach(function(el){
+      el.addEventListener('click', function(e){
+        var nav = parseInt(el.getAttribute('data-nav'),10);
+        if(nav===state.level) return;
+        hideTooltip();
+        var o = originFromEvent(e);
+        if(nav===0){ state.sysIdx=null; state.childIdx=null; }
+        if(nav===1){ state.childIdx=null; }
+        state.level = nav;
+        render('out', o.x, o.y);
+      });
+    });
+  }
+})();
+</script>

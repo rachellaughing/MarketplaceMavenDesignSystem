@@ -1,0 +1,23 @@
+{
+  "$description": "Typography tokens as implemented in the Revenue Health Matrix Zoom Explorer. No broader Marketplace Maven type scale is defined yet — see BRAND-FOUNDATIONS-TODO.md.",
+  "fontFamily": {
+    "primary": "Inter, -apple-system, sans-serif",
+    "source": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  },
+  "weights": {
+    "regular": 400,
+    "medium": 500,
+    "semibold": 600
+  },
+  "scaleObserved": {
+    "$description": "Font sizes as used in the explorer component — not a formalized scale, just what's in the code today.",
+    "breadcrumb": "13px",
+    "hint": "12px",
+    "tooltip": "12px",
+    "areaCardLabel": "13px",
+    "subsystemNodeLabel": "12px",
+    "systemNodeLabel": "14px",
+    "systemDetailTitle": "16px",
+    "systemDetailMeta": "11px"
+  }
+}

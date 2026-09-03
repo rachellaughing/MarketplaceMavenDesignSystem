@@ -1,0 +1,26 @@
+{
+  "$description": "Color tokens as implemented in the Revenue Health Matrix Zoom Explorer. These are the Matrix's per-system diagnostic colors, not (yet) a general Marketplace Maven brand palette — see BRAND-FOUNDATIONS-TODO.md.",
+  "systems": {
+    "positioning": { "label": "Positioning", "code": "POS", "color": "#3B82F6", "soft": "#EAF2FE" },
+    "authority": { "label": "Authority", "code": "AUTH", "color": "#10B981", "soft": "#E7F8F1" },
+    "conversion": { "label": "Conversion", "code": "CONV", "color": "#E11D48", "soft": "#FCEAEE" },
+    "lifecycle": { "label": "Lifecycle", "code": "LFC", "color": "#8B5CF6", "soft": "#F1ECFE" },
+    "visibility": { "label": "Visibility", "code": "VIS", "color": "#F59E0B", "soft": "#FEF3E2" }
+  },
+  "neutrals": {
+    "stageBackground": "#FAFAF8",
+    "stageBorder": "#E5E3DC",
+    "textPrimary": "#111111",
+    "textSecondary": "#666666",
+    "textMuted": "#888888",
+    "textFaint": "#999999",
+    "nodeLabel": "#333333",
+    "tooltipBackground": "#1a1a1a",
+    "tooltipText": "#ffffff"
+  },
+  "softTintFormula": {
+    "$description": "The 'soft' background tint per system is not hand-picked — it's derived from the system's hex via HSL, preserving hue so each system stays visibly distinct instead of collapsing to the same pale off-white.",
+    "algorithm": "convert hex to HSL, cap saturation at 65%, fix lightness to 93%",
+    "reference": "see hexToSoft() in components/revenue-matrix-explorer/revenue-matrix-zoom-explorer.html"
+  }
+}
