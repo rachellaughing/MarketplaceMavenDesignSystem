@@ -1,0 +1,15 @@
+{
+  "$description": "Revenue Health Matrix system colors — used ONLY by the Matrix Zoom Explorer component (components/revenue-matrix-explorer/) to distinguish its 5 parent systems. Distinct from the general brand palette in colors.json.",
+  "systems": {
+    "positioning": { "label": "Positioning", "code": "POS", "color": "#3B82F6", "soft": "#EAF2FE" },
+    "authority": { "label": "Authority", "code": "AUTH", "color": "#10B981", "soft": "#E7F8F1" },
+    "conversion": { "label": "Conversion", "code": "CONV", "color": "#E11D48", "soft": "#FCEAEE" },
+    "lifecycle": { "label": "Lifecycle", "code": "LFC", "color": "#8B5CF6", "soft": "#F1ECFE" },
+    "visibility": { "label": "Visibility", "code": "VIS", "color": "#F59E0B", "soft": "#FEF3E2" }
+  },
+  "note": "These 5 colors are NOT part of the Marketplace Maven brand palette (see colors.json) — they're a diagnostic color-coding scheme specific to this one component. The explorer currently uses Inter as its font, not the brand's Instrument Serif/Inter/JetBrains Mono system — worth reconciling in a future pass so the explorer matches the rest of the brand.",
+  "softTintFormula": {
+    "algorithm": "convert hex to HSL, cap saturation at 65%, fix lightness to 93%",
+    "reference": "see hexToSoft() in components/revenue-matrix-explorer/revenue-matrix-zoom-explorer.html"
+  }
+}

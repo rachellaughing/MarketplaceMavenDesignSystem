@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketplace Maven — Divi Component Reference v3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Live styles: the exact consolidated system, loaded from mm-styles.css -->
+<link rel="stylesheet" href="../../01-theme/marketplace-maven-child/assets/css/mm-styles.css">
+<style>
+  /* ---- Reference page chrome only (namespaced .ref-*, never .mm-*) ---- */
+  :root {
+    --ref-bg: #FFFEFA;
+    --ref-ink: #1A2828;
+    --ref-soft: #6B6560;
+    --ref-rule: rgba(26, 40, 40, 0.14);
+    --ref-sand: #F6F2EA;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--ref-bg);
+    color: var(--ref-ink);
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .ref-shell { display: flex; align-items: flex-start; }
+
+  /* Sidebar nav */
+  .ref-nav {
+    position: sticky; top: 0; align-self: flex-start;
+    width: 232px; min-width: 232px; height: 100vh; overflow-y: auto;
+    border-right: 1px solid var(--ref-rule);
+    padding: 2rem 1.25rem;
+    background: var(--ref-sand);
+  }
+  .ref-nav .ref-brand {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.4rem; line-height: 1.1; margin: 0 0 0.25rem;
+  }
+  .ref-nav .ref-brand-sub {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ref-soft); margin-bottom: 1.75rem;
+  }
+  .ref-nav a {
+    display: block; text-decoration: none; color: var(--ref-ink);
+    font-size: 13px; padding: 0.4rem 0; border-bottom: 1px solid transparent;
+    transition: color 0.15s ease;
+  }
+  .ref-nav a:hover { color: #F05223; }
+  .ref-nav .ref-nav-num { color: var(--ref-soft); font-variant-numeric: tabular-nums; margin-right: 0.5rem; font-size: 11px; }
+
+  /* Main column */
+  .ref-main { flex: 1; min-width: 0; max-width: 1080px; padding: 3rem clamp(1.25rem, 4vw, 4rem) 6rem; }
+  .ref-hero { margin-bottom: 3.5rem; }
+  .ref-hero h1 {
+    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+    font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.03; letter-spacing: -0.012em;
+    margin: 0 0 1rem;
+  }
+  .ref-hero p { color: var(--ref-soft); font-size: 1.05rem; max-width: 60ch; margin: 0 0 0.4rem; }
+  .ref-hero code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: var(--ref-sand); padding: 0.1em 0.4em; border-radius: 3px; }
+
+  section.ref-section { padding-top: 2.5rem; margin-top: 2.5rem; border-top: 1px solid var(--ref-rule); scroll-margin-top: 1rem; }
+  section.ref-section:first-of-type { border-top: none; margin-top: 0; }
+  .ref-section > h2 {
+    font-family: 'Instrument Serif', Georgia, serif; font-weight: 400;
+    font-size: 1.9rem; letter-spacing: -0.01em; margin: 0 0 0.35rem;
+    display: flex; align-items: baseline; gap: 0.65rem;
+  }
+  .ref-section > h2 .ref-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #F05223; letter-spacing: 0.05em; }
+  .ref-section > .ref-lede { color: var(--ref-soft); font-size: 0.95rem; margin: 0 0 1.75rem; max-width: 65ch; }
+  .ref-sub {
+    margin: 2rem 0 0.75rem; font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ref-soft); font-weight: 600;
+  }
+
+  /* Demo blocks */
+  .ref-demo { border: 1px solid var(--ref-rule); border-radius: 6px; overflow: hidden; margin-bottom: 1.25rem; background: #fff; }
+  .ref-demo-stage { padding: 1.75rem; }
+  .ref-demo-stage.is-dark { background: #1F3536; }
+  .ref-demo-stage.is-abyss { background: #182829; }
+  .ref-demo-stage.is-sand { background: var(--ref-sand); }
+  .ref-demo-label {
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 0.6rem 1rem; border-top: 1px solid var(--ref-rule);
+    background: #FBF9F4; font-size: 11px; color: var(--ref-soft);
+  }
+  .ref-demo-label code { font-family: 'JetBrains Mono', monospace; color: var(--ref-ink); }
+  .ref-row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .ref-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+
+  /* Color swatches */
+  .ref-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.85rem; }
+  .ref-swatch { border: 1px solid var(--ref-rule); border-radius: 6px; overflow: hidden; }
+  .ref-swatch .chip { height: 74px; }
+  .ref-swatch .meta { padding: 0.55rem 0.7rem; }
+  .ref-swatch .meta .name { font-size: 12px; font-weight: 600; }
+  .ref-swatch .meta .val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ref-soft); }
+  .ref-swatch .meta .tok { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #F05223; }
+
+  .ref-note {
+    background: var(--ref-sand); border-left: 2px solid #F05223;
+    padding: 0.9rem 1.1rem; border-radius: 0 4px 4px 0; font-size: 0.9rem;
+    color: var(--ref-ink); margin-bottom: 1.5rem;
+  }
+  .ref-note strong { color: #F05223; }
+  .ref-note code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+  ul.ref-plain { padding-left: 1.1rem; margin: 0; }
+  ul.ref-plain li { margin: 0.2rem 0; font-size: 0.92rem; }
+  .ref-chip-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .ref-chip-list code {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    background: var(--ref-sand); border: 1px solid var(--ref-rule);
+    border-radius: 3px; padding: 0.2rem 0.5rem;
+  }
+
+  /* Homepage v3 blurb previews. These mirror the CSS installed with Home.v3. */
+  .ref-home-blurbs .et_pb_blurb_content { max-width: none; width: 100%; text-align: left; }
+  .ref-home-blurbs .et_pb_module_header { padding: 0; }
+  .ref-home-blurbs .et_pb_blurb_description p { margin: 0; padding: 0; }
+  .ref-blurb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+  .ref-blurb-grid > .et_pb_blurb { margin: 0 !important; }
+
+  .ref-home-blurbs .mm-dept-row > .et_pb_column { flex: 1 1 25% !important; }
+
+  .ref-home-blurbs .mm-span-strip { border-top: 1px solid rgba(26,40,40,.14); }
+  .ref-home-blurbs .mm-span { min-height: 210px; padding: 29px 22px !important; border-right: 1px solid rgba(26,40,40,.14); }
+  .ref-home-blurbs .mm-span:last-child { border-right: 0; }
+  .ref-home-blurbs .mm-span .et_pb_blurb_content::before { content: attr(data-number); display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #137474; margin-bottom: 22px; }
+  .ref-home-blurbs .mm-span .et_pb_module_header { font-family: 'Instrument Serif', Georgia, serif; font-size: 25px; font-weight: 400; line-height: 1.05; color: #1a2828; margin: 0 0 12px; }
+  .ref-home-blurbs .mm-span .et_pb_blurb_description { font-size: 12px; line-height: 1.55; color: #6b6560; }
+
+  .ref-home-blurbs .mm-find-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+  .ref-home-blurbs .mm-find { background: #fffefa; border: 1px solid rgba(26,40,40,.08); padding: 29px !important; }
+  .ref-home-blurbs .mm-find small { display: block; font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: .1em; color: #f05223; margin-bottom: 15px; }
+  .ref-home-blurbs .mm-find .et_pb_module_header { font-family: 'Instrument Serif', Georgia, serif; font-size: 27px; font-weight: 400; line-height: 1.05; color: #1a2828; margin: 0 0 8px; }
+  .ref-home-blurbs .mm-find .et_pb_blurb_description { font-size: 13px; line-height: 1.55; color: #6b6560; }
+
+  .ref-home-blurbs .mm-spec-list { max-width: 420px; }
+  .ref-home-blurbs .mm-spec { padding: 16px 0 !important; border-bottom: 1px solid rgba(26,40,40,.14); }
+  .ref-home-blurbs .mm-spec:first-child { border-top: 1px solid rgba(26,40,40,.14); }
+  .ref-home-blurbs .mm-spec .et_pb_module_header { font-family: 'Instrument Serif', Georgia, serif; font-size: 21px; font-weight: 400; line-height: 1; color: #1a2828; margin: 0 0 5px; }
+  .ref-home-blurbs .mm-spec .et_pb_blurb_description { font-size: 12px; line-height: 1.5; color: #6b6560; }
+
+  .ref-home-blurbs .mm-proof-blurb { max-width: 520px; padding: 0 !important; background: #fffefa; border: 1px solid rgba(26,40,40,.12); box-shadow: 0 24px 50px rgba(31,53,54,.09); overflow: hidden; }
+  .ref-home-blurbs .mm-proof-blurb .et_pb_main_blurb_image { margin: 0 !important; padding-top: 34px; background: #f3efe7; position: relative; }
+  .ref-home-blurbs .mm-proof-blurb .et_pb_main_blurb_image::before { content: ""; position: absolute; top: 13px; left: 14px; width: 9px; height: 9px; border-radius: 50%; background: rgba(26,40,40,.16); box-shadow: 16px 0 0 rgba(26,40,40,.16), 32px 0 0 rgba(26,40,40,.16); }
+  .ref-home-blurbs .mm-proof-shot { min-height: 190px; display: grid; place-items: center; background: linear-gradient(135deg,#d9ecea,#f7eee8); color: #137474; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  .ref-home-blurbs .mm-proof-blurb .et_pb_blurb_container { padding: 18px 22px; border-top: 1px solid rgba(26,40,40,.1); }
+  .ref-home-blurbs .mm-proof-blurb .et_pb_module_header { font-family: Inter, Arial, sans-serif; font-size: 12px; font-weight: 600; color: #1a2828; margin: 0 0 4px; }
+  .ref-home-blurbs .mm-proof-blurb .et_pb_blurb_description { font-size: 12px; line-height: 1.5; color: #6b6560; }
+  .ref-home-blurbs .mm-phase-row > .et_pb_column { flex: 1 1 25% !important; }
+
+  @media (max-width: 820px) {
+    .ref-nav { display: none; }
+    .ref-main { padding: 2rem 1.25rem 4rem; }
+    .ref-home-blurbs .ref-blurb-grid, .ref-home-blurbs .mm-find-grid { grid-template-columns: 1fr; }
+    .ref-home-blurbs .ref-blurb-grid > .et_pb_blurb { border-right: 0; border-bottom: 1px solid rgba(26,40,40,.14); }
+    .ref-home-blurbs .mm-dept-row > .et_pb_column { flex-basis: 100% !important; }
+    .ref-home-blurbs .mm-phase-row > .et_pb_column { flex-basis: 100% !important; }
+  }
+</style>
+</head>
+<body>
+<div class="ref-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <nav class="ref-nav">
+    <div class="ref-brand">Marketplace<br>Maven</div>
+    <div class="ref-brand-sub">Divi Reference v3</div>
+    <a href="#tokens"><span class="ref-nav-num">02</span>Brand Tokens</a>
+    <a href="#type"><span class="ref-nav-num">03</span>Typography</a>
+    <a href="#utilities"><span class="ref-nav-num">04</span>Utilities</a>
+    <a href="#buttons"><span class="ref-nav-num">05</span>Buttons</a>
+    <a href="#cards"><span class="ref-nav-num">06</span>Cards</a>
+    <a href="#links"><span class="ref-nav-num">07</span>Links</a>
+    <a href="#lists"><span class="ref-nav-num">08</span>Lists</a>
+    <a href="#components"><span class="ref-nav-num">09</span>Divi Components</a>
+    <a href="#home-blurbs"><span class="ref-nav-num">09B</span>Homepage Blurbs</a>
+    <a href="#layout"><span class="ref-nav-num">10</span>Layout Blocks</a>
+    <a href="#dark"><span class="ref-nav-num">11</span>Dark Sections</a>
+    <a href="#longform"><span class="ref-nav-num">14</span>Longform / Editorial</a>
+    <a href="#blog"><span class="ref-nav-num">15</span>Blog Modules</a>
+    <a href="#lens"><span class="ref-nav-num">16</span>Lens Grid</a>
+    <a href="#manifesto"><span class="ref-nav-num">17</span>Manifesto</a>
+    <a href="#friction"><span class="ref-nav-num">18</span>Friction Section</a>
+  </nav>
+
+  <!-- ============ MAIN ============ -->
+  <main class="ref-main">
+
+    <header class="ref-hero">
+      <h1>Marketplace Maven Divi Component System</h1>
+      <p>Every class in <code>assets/css/mm-styles.css</code>, rendered live. Add class names to a Divi module under <code>Advanced → CSS ID &amp; Classes → CSS Class</code>.</p>
+      <p>This is the working v3 reference. It loads the child theme's real stylesheet, so it can grow alongside Homepage v3 and future Divi components while remaining a reliable picture of what ships.</p>
+    </header>
+
+    <!-- 02 TOKENS -->
+    <section class="ref-section" id="tokens">
+      <h2><span class="ref-num">02</span> Brand Tokens</h2>
+      <p class="ref-lede">The single source of color, type, and shape. Everything else references these variables — change a token here and it cascades everywhere.</p>
+
+      <div class="ref-sub" style="margin-top:0;">Surfaces &amp; Ink</div>
+      <div class="ref-swatches" style="margin-bottom:1.5rem;">
+        <div class="ref-swatch"><div class="chip" style="background:#FFFEFA; border-bottom:1px solid var(--ref-rule);"></div><div class="meta"><div class="name">Paper</div><div class="val">#FFFEFA</div><div class="tok">--mm-paper</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#F6F2EA;"></div><div class="meta"><div class="name">Sand</div><div class="val">#F6F2EA</div><div class="tok">--mm-sand</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#ECE6D9;"></div><div class="meta"><div class="name">Sand Deep</div><div class="val">#ECE6D9</div><div class="tok">--mm-sand-deep</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#EDF2F0;"></div><div class="meta"><div class="name">Teal Soft</div><div class="val">#EDF2F0</div><div class="tok">--mm-teal-soft</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#1A2828;"></div><div class="meta"><div class="name">Ink</div><div class="val">#1A2828</div><div class="tok">--mm-ink</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#6B6560;"></div><div class="meta"><div class="name">Ink Soft</div><div class="val">#6B6560</div><div class="tok">--mm-ink-soft</div></div></div>
+      </div>
+
+      <div class="ref-sub">Teal System</div>
+      <div class="ref-swatches" style="margin-bottom:1.5rem;">
+        <div class="ref-swatch"><div class="chip" style="background:#137474;"></div><div class="meta"><div class="name">Teal</div><div class="val">#137474</div><div class="tok">--mm-teal</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#2C7A6E;"></div><div class="meta"><div class="name">Teal Mid</div><div class="val">#2C7A6E</div><div class="tok">--mm-teal-mid</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#22BDC1;"></div><div class="meta"><div class="name">Teal Bright</div><div class="val">#22BDC1</div><div class="tok">--mm-teal-bright</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#EDF7F7;"></div><div class="meta"><div class="name">Teal Pale</div><div class="val">#EDF7F7</div><div class="tok">--mm-teal-pale</div></div></div>
+      </div>
+
+      <div class="ref-sub">Ember (CTA) &amp; Dark</div>
+      <div class="ref-swatches" style="margin-bottom:1.5rem;">
+        <div class="ref-swatch"><div class="chip" style="background:#F05223;"></div><div class="meta"><div class="name">Ember</div><div class="val">#F05223</div><div class="tok">--mm-ember</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#D6431A;"></div><div class="meta"><div class="name">Ember Hover</div><div class="val">#D6431A</div><div class="tok">--mm-ember-hover</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#FDF0EA;"></div><div class="meta"><div class="name">Ember Pale</div><div class="val">#FDF0EA</div><div class="tok">--mm-ember-pale</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#1F3536;"></div><div class="meta"><div class="name">Depth / Forest</div><div class="val">#1F3536</div><div class="tok">--mm-depth</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#182829;"></div><div class="meta"><div class="name">Abyss / Dark</div><div class="val">#182829</div><div class="tok">--mm-abyss</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#0D1A1C;"></div><div class="meta"><div class="name">Night</div><div class="val">#0D1A1C</div><div class="tok">--mm-night</div></div></div>
+      </div>
+
+      <div class="ref-sub">Accent Set (traffic key / data viz)</div>
+      <div class="ref-swatches">
+        <div class="ref-swatch"><div class="chip" style="background:#7DC855;"></div><div class="meta"><div class="name">Green</div><div class="val">#7DC855</div><div class="tok">--mm-tk-green</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#F5A623;"></div><div class="meta"><div class="name">Amber</div><div class="val">#F5A623</div><div class="tok">--mm-tk-amber</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#F05223;"></div><div class="meta"><div class="name">Red (= Ember)</div><div class="val">#F05223</div><div class="tok">--mm-tk-red</div></div></div>
+        <div class="ref-swatch"><div class="chip" style="background:#B06FD8;"></div><div class="meta"><div class="name">Purple</div><div class="val">#B06FD8</div><div class="tok">--mm-tk-purple</div></div></div>
+      </div>
+    </section>
+
+    <!-- 03 TYPOGRAPHY -->
+    <section class="ref-section" id="type">
+      <h2><span class="ref-num">03</span> Typography</h2>
+      <p class="ref-lede">Instrument Serif for display &amp; headings, Inter for body &amp; labels. Wrap a text module in <code>mm-text</code> to get the whole stack automatically.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-text">
+            <h1>Heading One — display serif</h1>
+            <h2>Heading Two — section serif</h2>
+            <h3>Heading Three — subsection serif</h3>
+            <h4>Heading Four — Inter 600 subhead</h4>
+            <h5>Heading Five — uppercase label</h5>
+            <h6>Heading Six — micro label</h6>
+            <p>Body copy is Inter at a comfortable reading measure. It runs at 17px with generous 1.65 line-height, colored ink. Inline <a href="#">links render teal</a> with a subtle underline offset.</p>
+            <blockquote>Pull quotes render in italic Instrument Serif with a teal left rule — for the lines worth slowing down on.</blockquote>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Full type stack</span><code>mm-text</code></div>
+      </div>
+
+      <div class="ref-cols">
+        <div class="ref-demo">
+          <div class="ref-demo-stage">
+            <p class="mm-eyebrow">Eyebrow label</p>
+            <p class="mm-eyebrow mm-eyebrow-ember">Ember eyebrow</p>
+            <p class="mm-eyebrow mm-eyebrow-teal">Teal eyebrow</p>
+          </div>
+          <div class="ref-demo-label"><span>Eyebrows — add both classes to the Text module</span><code>mm-eyebrow · mm-eyebrow-teal</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage">
+            <p class="mm-display-emphasis" style="font-size:1.4rem; margin:0 0 .5rem;">Display emphasis <em>in italic ember</em></p>
+            <p class="mm-margin-note">A margin note — smaller italic serif in soft ink for asides.</p>
+          </div>
+          <div class="ref-demo-label"><span>Emphasis</span><code>mm-display-emphasis · mm-margin-note</code></div>
+        </div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <p class="mm-dropcap" style="margin:0;">The drop cap sets the opening letter in oversized ember serif, floated beside the paragraph — an editorial flourish for the first line of a longform piece. It pairs with the serif display headings above.</p>
+        </div>
+        <div class="ref-demo-label"><span>Drop cap</span><code>mm-dropcap</code></div>
+      </div>
+    </section>
+
+    <!-- 04 UTILITIES -->
+    <section class="ref-section" id="utilities">
+      <h2><span class="ref-num">04</span> Utilities</h2>
+      <p class="ref-lede">Backgrounds—including the paper-to-cool-mist gradient—text colors, hairline rules, and the drafting-paper grid overlay.</p>
+
+      <div class="ref-sub" style="margin-top:0;">Background helpers</div>
+      <div class="ref-cols" style="margin-bottom:1.5rem;">
+        <div class="mm-bg-paper" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-paper</div>
+        <div class="mm-bg-sand" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-sand</div>
+        <div class="mm-bg-sand-deep" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-sand-deep</div>
+        <div class="mm-bg-teal-soft" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-teal-soft</div>
+        <div class="mm-bg-teal-pale" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-teal-pale</div>
+        <div class="mm-bg-gradient" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-gradient</div>
+        <div class="mm-bg-ember-pale" style="padding:1.25rem; border:1px solid var(--ref-rule); border-radius:6px;">mm-bg-ember-pale</div>
+        <div class="mm-bg-ember" style="padding:1.25rem; border-radius:6px; color:#fff;">mm-bg-ember</div>
+        <div class="mm-bg-forest" style="padding:1.25rem; border-radius:6px;">mm-bg-forest</div>
+        <div class="mm-bg-dark" style="padding:1.25rem; border-radius:6px;">mm-bg-dark</div>
+      </div>
+
+      <div class="ref-demo" style="margin-bottom:1.5rem;">
+        <div class="ref-demo-stage mm-bg-gradient" style="min-height:240px; display:grid; grid-template-columns:1.15fr .85fr; gap:3rem; align-items:center; padding:3rem;">
+          <div><p class="mm-eyebrow mm-eyebrow-teal">The instrument</p><h3 style="font-family:'Instrument Serif',serif; font-size:42px; font-weight:400; line-height:1; margin:0 0 1rem;">The Revenue Health<br><em style="color:#F05223;">Matrix™</em></h3><p style="max-width:480px; margin:0;">A warm paper surface that gradually shifts into a quiet cool mist.</p></div>
+          <div><p style="margin:0;">Use this utility on a Divi section or row when you want depth without creating a hard visual break.</p></div>
+        </div>
+        <div class="ref-demo-label"><span>Paper-to-cool-mist gradient with a light bottom rule</span><code>mm-bg-gradient</code></div>
+      </div>
+
+      <div class="ref-sub">Text colors</div>
+      <div class="ref-demo" style="margin-bottom:1.5rem;">
+        <div class="ref-demo-stage ref-row" style="gap:1.5rem;">
+          <span class="mm-text-ink">Ink</span>
+          <span class="mm-text-soft">Soft</span>
+          <span class="mm-text-teal">Teal</span>
+          <span class="mm-text-ember">Ember</span>
+          <span class="mm-bg-forest" style="padding:.2rem .5rem; border-radius:3px;"><span class="mm-text-teal-bright">Teal Bright</span></span>
+          <span class="mm-bg-forest" style="padding:.2rem .5rem; border-radius:3px;"><span class="mm-text-white">White</span></span>
+          <span class="mm-bg-forest" style="padding:.2rem .5rem; border-radius:3px;"><span class="mm-text-bright">Bright</span></span>
+        </div>
+        <div class="ref-demo-label"><span>Text color helpers</span><code>mm-text-ink · -soft · -teal · -ember · -teal-bright · -white · -bright</code></div>
+      </div>
+
+      <div class="ref-cols">
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-grid" style="min-height:90px;"></div>
+          <div class="ref-demo-label"><span>Blueprint grid (40px)</span><code>mm-grid</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-grid-fine" style="min-height:90px;"></div>
+          <div class="ref-demo-label"><span>Fine grid (24px)</span><code>mm-grid-fine</code></div>
+        </div>
+      </div>
+
+      <div class="ref-cols">
+        <div class="ref-demo">
+          <div class="ref-demo-stage"><p class="mm-rule-left" style="margin:0;">Left teal rule — editorial callout.</p></div>
+          <div class="ref-demo-label"><span>Accent rule</span><code>mm-rule-left</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage"><p class="mm-rule-left-ember" style="margin:0;">Left ember rule — for emphasis.</p></div>
+          <div class="ref-demo-label"><span>Accent rule</span><code>mm-rule-left-ember</code></div>
+        </div>
+      </div>
+
+      <div class="ref-sub">Spacing &amp; width utilities</div>
+      <div class="ref-note" style="margin-bottom:0.75rem;">Applied as Divi module classes — not demoed visually. Padding: <code>mm-pt-sm/md/lg/xl</code>, <code>mm-pb-sm/md/lg/xl</code>. Margin: <code>mm-mt-sm/md/lg</code>, <code>mm-mb-sm/md/lg</code>. Zeroing: <code>mm-no-top</code>, <code>mm-no-bottom</code>. Width: <code>mm-constrain-sm/md/lg</code> + <code>mm-center-block</code>.</div>
+    </section>
+
+    <!-- 05 BUTTONS -->
+    <section class="ref-section" id="buttons">
+      <h2><span class="ref-num">05</span> Buttons</h2>
+      <p class="ref-lede">Wrap a Divi Button module (or any link) in a button class. Hover to see states. <code>mm-btn-ember</code>/<code>mm-btn-ember-outline</code> are legacy aliases of <code>-cta</code>/<code>-outline</code>.</p>
+      <div class="ref-demo">
+        <div class="ref-demo-stage ref-row">
+          <span class="mm-btn mm-btn-cta"><a href="#">Primary CTA</a></span>
+          <span class="mm-btn mm-btn-outline"><a href="#">Ember Outline</a></span>
+          <span class="mm-btn mm-btn-teal"><a href="#">Teal Ghost</a></span>
+        </div>
+        <div class="ref-demo-label"><span>Variants</span><code>mm-btn + mm-btn-cta · -outline · -teal</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage ref-row">
+          <span class="mm-btn mm-btn-cta mm-btn-sm"><a href="#">Small</a></span>
+          <span class="mm-btn mm-btn-cta"><a href="#">Default</a></span>
+          <span class="mm-btn mm-btn-cta mm-btn-lg"><a href="#">Large</a></span>
+        </div>
+        <div class="ref-demo-label"><span>Sizes</span><code>mm-btn-sm · (default) · mm-btn-lg</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-dark ref-row">
+          <span class="mm-btn mm-btn-cta"><a href="#">Primary on dark</a></span>
+          <span class="mm-btn mm-btn-outline-light"><a href="#">Light outline</a></span>
+        </div>
+        <div class="ref-demo-label"><span>Dark-section outline</span><code>mm-btn-outline-light</code></div>
+      </div>
+    </section>
+
+    <!-- 06 CARDS -->
+    <section class="ref-section" id="cards">
+      <h2><span class="ref-num">06</span> Cards &amp; Surfaces</h2>
+      <p class="ref-lede">Bordered surfaces with subtle paper shadow, in three warmths. <code>mm-paper-card*</code> are legacy aliases.</p>
+      <div class="ref-cols">
+        <div class="mm-card" style="padding:1.5rem;"><strong>Paper card</strong><p style="margin:.4rem 0 0; color:var(--ref-soft); font-size:.9rem;">White surface, hairline border, soft shadow.</p></div>
+        <div class="mm-card-sand" style="padding:1.5rem;"><strong>Sand card</strong><p style="margin:.4rem 0 0; color:var(--ref-soft); font-size:.9rem;">Warm sand surface.</p></div>
+        <div class="mm-card-deep" style="padding:1.5rem;"><strong>Deep card</strong><p style="margin:.4rem 0 0; color:var(--ref-soft); font-size:.9rem;">Deeper sand for contrast.</p></div>
+      </div>
+    </section>
+
+    <!-- 07 LINKS -->
+    <section class="ref-section" id="links">
+      <h2><span class="ref-num">07</span> Links</h2>
+      <p class="ref-lede">Inline link treatments. The <code>read</code> and <code>ghost</code> variants append an arrow automatically.</p>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="line-height:2.4;">
+          <a class="mm-link-read" href="#">Read link</a> &nbsp;·&nbsp;
+          <a class="mm-link-ghost" href="#">Ghost link</a> &nbsp;·&nbsp;
+          <a class="mm-link-subtle" href="#">Subtle link</a> &nbsp;·&nbsp;
+          <a class="mm-link-ember" href="#">Ember link</a> &nbsp;·&nbsp;
+          <a class="mm-link-underline" href="#">Animated underline</a>
+        </div>
+        <div class="ref-demo-label"><span>Inline links</span><code>mm-link-read · -ghost · -subtle · -ember · -underline</code></div>
+      </div>
+    </section>
+
+    <!-- 08 LISTS -->
+    <section class="ref-section" id="lists">
+      <h2><span class="ref-num">08</span> Lists</h2>
+      <p class="ref-lede">Custom list markers. Wrapper form (<code>div.mm-checklist &gt; ul</code>) and direct form (<code>ul.mm-checklist &gt; li</code>) both work.</p>
+      <div class="ref-cols">
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-checklist"><ul><li>Included item one</li><li>Included item two</li><li>Included item three</li></ul></div>
+          <div class="ref-demo-label"><span>Check list</span><code>mm-checklist</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-xlist"><ul><li>Missing item one</li><li>Missing item two</li><li>Missing item three</li></ul></div>
+          <div class="ref-demo-label"><span>X list</span><code>mm-xlist</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-arrow-list"><ul><li>Next step one</li><li>Next step two</li><li>Next step three</li></ul></div>
+          <div class="ref-demo-label"><span>Arrow list</span><code>mm-arrow-list</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage mm-dash-list"><ul><li>Plain point one</li><li>Plain point two</li><li>Plain point three</li></ul></div>
+          <div class="ref-demo-label"><span>Dash list</span><code>mm-dash-list</code></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 DIVI COMPONENTS -->
+    <section class="ref-section" id="components">
+      <h2><span class="ref-num">09</span> Divi Components</h2>
+      <p class="ref-lede">Styling that targets Divi's toggle and table modules. Shown here with the same markup Divi outputs.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-toggle">
+            <div class="et_pb_toggle et_pb_toggle_open">
+              <h5 class="et_pb_toggle_title">An open toggle title</h5>
+              <div class="et_pb_toggle_content"><p>Open state shows a minus in ember. Content is Inter in soft ink.</p></div>
+            </div>
+            <div class="et_pb_toggle et_pb_toggle_close">
+              <h5 class="et_pb_toggle_title">A closed toggle title</h5>
+            </div>
+            <div class="et_pb_toggle et_pb_toggle_close">
+              <h5 class="et_pb_toggle_title">Another closed toggle</h5>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Accordion / toggle</span><code>mm-toggle</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage mm-table">
+          <table>
+            <thead><tr><th>Dimension</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td>Positioning</td><td>Who you're for and what you replace.</td></tr>
+              <tr><td>Offer</td><td>The shape of the transaction.</td></tr>
+              <tr><td>Pricing</td><td>What the market will actually pay.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ref-demo-label"><span>Editorial table</span><code>mm-table</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-gap-table">
+            <div class="mm-gap-cols"><span>What one team sends</span><span></span><span>What the next team receives</span></div>
+            <div class="mm-gap-row"><div class="mm-gap-a">Marketing-qualified lead</div><div class="mm-gap-arrow">→</div><div class="mm-gap-b">A name with incomplete context</div></div>
+            <div class="mm-gap-row"><div class="mm-gap-a">Closed-won customer</div><div class="mm-gap-arrow">→</div><div class="mm-gap-b">A promise delivery never saw</div></div>
+            <div class="mm-gap-row"><div class="mm-gap-a">Customer feedback</div><div class="mm-gap-arrow">→</div><div class="mm-gap-b">A note that never reaches strategy</div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Gap / handoff table</span><code>mm-gap-table · mm-gap-cols · mm-gap-row</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage mm-cta-row">
+          <p><span class="mm-cta-primary"><a href="#">Book a call</a></span> <span class="mm-cta-ghost"><a href="#">See the framework</a></span></p>
+        </div>
+        <div class="ref-demo-label"><span>CTA row</span><code>mm-cta-row + mm-cta-primary · mm-cta-ghost</code></div>
+      </div>
+
+      <div class="ref-sub">Divi Call to Action modules</div>
+      <div class="ref-note"><strong>One base class, optional variants:</strong> add <code>mm-cta-module</code> to every Divi Call to Action module. Add one modifier when needed. For an editable kicker, begin the Title field with <code>&lt;small&gt;NEXT STEP&lt;/small&gt;</code>.</div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="et_pb_promo mm-cta-module">
+            <div class="et_pb_promo_description"><h2 class="et_pb_module_header"><small>Start here</small>See where revenue is going missing.</h2><p>The free Snapshot gives you a structured first read across all five revenue systems.</p></div>
+            <div class="et_pb_button_wrapper"><a class="et_pb_button" href="#">Start the free Snapshot</a></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Editorial CTA — light</span><code>mm-cta-module</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-forest">
+          <div class="et_pb_promo mm-cta-module mm-cta-dark">
+            <div class="et_pb_promo_description"><h2 class="et_pb_module_header"><small>Ready for the full picture?</small>Find the constraint before you fund another workaround.</h2><p>Map the handoffs, ownership gaps, and invisible dependencies slowing the revenue system down.</p></div>
+            <div class="et_pb_button_wrapper"><a class="et_pb_button" href="#">Explore the diagnostic</a></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Editorial CTA — dark</span><code>mm-cta-module mm-cta-dark</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="et_pb_promo mm-cta-module mm-cta-outline">
+            <div class="et_pb_promo_description"><h2 class="et_pb_module_header"><small>Need a closer look?</small>Bring us the system that keeps resisting the obvious fix.</h2><p>We’ll help you separate the visible symptom from the structural cause underneath it.</p></div>
+            <div class="et_pb_button_wrapper"><a class="et_pb_button" href="#">See how we work</a></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Outlined CTA with ghost button</span><code>mm-cta-module mm-cta-outline</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="et_pb_promo mm-cta-module mm-cta-inline">
+            <div class="et_pb_promo_description"><h2 class="et_pb_module_header">Not sure where to start?</h2><p>Take the free Snapshot and get a useful first signal in about 15 minutes.</p></div>
+            <div class="et_pb_button_wrapper"><a class="et_pb_button" href="#">Take the Snapshot</a></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Compact horizontal CTA</span><code>mm-cta-module mm-cta-inline</code></div>
+      </div>
+    </section>
+
+    <!-- 09B HOMEPAGE V3 BLURBS -->
+    <section class="ref-section ref-home-blurbs" id="home-blurbs">
+      <h2><span class="ref-num">09B</span> Homepage v3 Blurb Modules</h2>
+      <p class="ref-lede">Reusable Blurb module styles from <code>Home.v3.json</code>, plus the phase/timeline variation. Apply the module class shown beneath each example; numbered groups also require the listed row class.</p>
+
+      <div class="ref-sub">Department friction strip</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-abyss" style="padding:0;">
+          <div class="et_pb_row mm-dept-row mm-dept-numbers">
+            <div class="et_pb_column"><div class="et_pb_blurb mm-dept"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Marketing</h4><div class="et_pb_blurb_description"><p>Demand gets created. Intent doesn’t survive the handoff.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-dept"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Sales</h4><div class="et_pb_blurb_description"><p>Deals move. Nobody quite agrees on what “qualified” means.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-dept"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Operations</h4><div class="et_pb_blurb_description"><p>Processes improve. The processes don’t talk to each other.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-dept"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Leadership</h4><div class="et_pb_blurb_description"><p>Decisions get made from partial signals. Confidently.</p></div></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Four-column dark department strip</span><code>row: mm-dept-row mm-dept-numbers · blurb: mm-dept</code></div>
+      </div>
+
+      <div class="ref-sub">Five revenue systems</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="padding:0;">
+          <div class="ref-blurb-grid mm-span-strip">
+            <div class="et_pb_blurb mm-span"><div class="et_pb_blurb_content" data-number="01"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Positioning System</h4><div class="et_pb_blurb_description"><p>Whether the market understands what you actually sell.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-span"><div class="et_pb_blurb_content" data-number="02"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Authority System</h4><div class="et_pb_blurb_description"><p>Whether anyone believes you before they meet you.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-span"><div class="et_pb_blurb_content" data-number="03"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Conversion System</h4><div class="et_pb_blurb_description"><p>Whether interest becomes revenue on purpose or by accident.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-span"><div class="et_pb_blurb_content" data-number="04"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Lifecycle System</h4><div class="et_pb_blurb_description"><p>What happens after the sale — and whether anyone owns it.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-span"><div class="et_pb_blurb_content" data-number="05"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Visibility System</h4><div class="et_pb_blurb_description"><p>Whether leadership can see what is actually happening.</p></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Five numbered system blurbs</span><code>row: mm-span-row mm-span-numbers · blurb: mm-span</code></div>
+      </div>
+
+      <div class="ref-sub">Diagnostic finding cards</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:#f6f2ea;">
+          <div class="mm-find-grid">
+            <div class="et_pb_blurb mm-find"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><small>01 / Origin</small><h4 class="et_pb_module_header">Founder Blindspots™</h4><div class="et_pb_blurb_description"><p>The founder became a working part of the system they’re trying to observe.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-find"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><small>02 / Adaptation</small><h4 class="et_pb_module_header">Shadow Systems™</h4><div class="et_pb_blurb_description"><p>When the official system stops working, capable people quietly build a better one.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-find"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><small>03 / Accumulation</small><h4 class="et_pb_module_header">Visibility Debt™</h4><div class="et_pb_blurb_description"><p>Important context disappears into workarounds, side channels, and partial reporting.</p></div></div></div></div>
+            <div class="et_pb_blurb mm-find"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><small>04 / Cost</small><h4 class="et_pb_module_header">Coordination Friction™</h4><div class="et_pb_blurb_description"><p>Two teams, one handoff, no owner — so the founder becomes the integration layer.</p></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Two-by-two finding card grid</span><code>row: mm-find-grid · blurb: mm-find</code></div>
+      </div>
+
+      <div class="ref-sub">How-we-work steps</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-forest" style="padding:0;">
+          <div class="et_pb_row mm-step-row mm-step-numbers">
+            <div class="et_pb_column"><div class="et_pb_blurb mm-step"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Follow the evidence</h4><div class="et_pb_blurb_description"><p>Interviews, records, and process maps document the gap between belief and experience.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-step"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Read the behavior</h4><div class="et_pb_blurb_description"><p>Every workaround is a rational response to something broken. We find the constraint.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-step"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Redesign the structure</h4><div class="et_pb_blurb_description"><p>Clarify ownership, sequence, and the handoffs that keep failing.</p></div></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Three numbered process blurbs</span><code>row: mm-step-row mm-step-numbers · blurb: mm-step</code></div>
+      </div>
+
+      <div class="ref-sub">Snapshot specification list</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-spec-list">
+            <div class="et_pb_blurb mm-spec"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">15 subsystems evaluated</h4><div class="et_pb_blurb_description"><p>Three per system, your pick</p></div></div></div></div>
+            <div class="et_pb_blurb mm-spec"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">~15 minutes</h4><div class="et_pb_blurb_description"><p>No preparation required</p></div></div></div></div>
+            <div class="et_pb_blurb mm-spec"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">60 areas</h4><div class="et_pb_blurb_description"><p>Evaluated across all five systems</p></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Stacked value-and-qualifier blurbs</span><code>blurb: mm-spec</code></div>
+      </div>
+
+      <div class="ref-sub">Images</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:#f6f2ea;">
+          <div class="et_pb_image mm-headshot">
+            <span class="et_pb_image_wrap"><img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='600' viewBox='0 0 900 600'%3E%3Crect width='900' height='600' fill='%23dceae8'/%3E%3Ccircle cx='450' cy='205' r='96' fill='%23137474'/%3E%3Cpath d='M240 600c18-170 95-255 210-255s192 85 210 255' fill='%231a2828'/%3E%3Cpath d='M0 0h900v40H0z' fill='%23f05223' opacity='.8'/%3E%3C/svg%3E" alt="Headshot crop example"></span>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Headshot image crop</span><code>image module: mm-headshot</code></div>
+      </div>
+      <div class="ref-sub">Proof / browser-preview card</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:#f6f2ea;">
+          <div class="et_pb_blurb mm-proof-blurb"><div class="et_pb_blurb_content"><div class="et_pb_main_blurb_image"><div class="mm-proof-shot">Revenue Health Report preview</div></div><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Sample reading</h4><div class="et_pb_blurb_description"><p>A visual preview with lightweight browser chrome and an editable Divi caption.</p></div></div></div></div>
+        </div>
+        <div class="ref-demo-label"><span>Image-led proof card</span><code>blurb: mm-proof-blurb</code></div>
+      </div>
+
+      <div class="ref-sub">Check blurbs</div>
+      <div class="ref-demo-grid">
+        <div class="ref-demo">
+          <div class="ref-demo-stage">
+            <div class="et_pb_blurb mm-check-blurb"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Founder &amp; leadership interviews</h4><div class="et_pb_blurb_description"><p>Structured one-on-ones with everyone who owns a piece of revenue.</p></div></div></div></div>
+          </div>
+          <div class="ref-demo-label"><span>Check blurb — light</span><code>mm-check-blurb</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage is-forest">
+            <div class="et_pb_blurb mm-check-blurb mm-check-blurb-dark"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header">Founder &amp; leadership interviews</h4><div class="et_pb_blurb_description"><p>Structured one-on-ones with everyone who owns a piece of revenue.</p></div></div></div></div>
+          </div>
+          <div class="ref-demo-label"><span>Check blurb — dark</span><code>mm-check-blurb mm-check-blurb-dark</code></div>
+        </div>
+      </div>
+
+      <div class="ref-sub">Phase / timeline blurbs</div>
+      <div class="ref-note"><strong>Editable kicker:</strong> put <code>&lt;small&gt;DAYS 1–3&lt;/small&gt;</code> before the main heading in the Divi Blurb module’s Title field. Every module uses the same <code>mm-phase</code> class.</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="padding:0;">
+          <div class="et_pb_row mm-phase-row">
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Days 1–3</small>Intake &amp; system review</h4><div class="et_pb_blurb_description"><p>Surveys, read-only access, existing documentation. We read your system before we meet your people.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Weeks 1–2</small>PBJ Sessions™</h4><div class="et_pb_blurb_description"><p>Cross-functional mapping of how work actually flows. Interviews with leadership and operators.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Week 3</small>Analysis &amp; synthesis</h4><div class="et_pb_blurb_description"><p>Full scoring, isolation of the real breakdowns, and sequencing by dependency.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Week 4</small>Delivery &amp; review</h4><div class="et_pb_blurb_description"><p>Live findings session with leadership, then the written deliverables.</p></div></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Phase blurbs — light section</span><code>row: mm-phase-row · blurb: mm-phase</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage mm-bg-dark" style="padding:0;">
+          <div class="et_pb_row mm-phase-row mm-phase-dark">
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Days 1–3</small>Intake &amp; system review</h4><div class="et_pb_blurb_description"><p>Surveys, read-only access, existing documentation. We read your system before we meet your people.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Weeks 1–2</small>PBJ Sessions™</h4><div class="et_pb_blurb_description"><p>Cross-functional mapping of how work actually flows. Interviews with leadership and operators.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Week 3</small>Analysis &amp; synthesis</h4><div class="et_pb_blurb_description"><p>Full scoring, isolation of the real breakdowns, and sequencing by dependency.</p></div></div></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_blurb mm-phase"><div class="et_pb_blurb_content"><div class="et_pb_blurb_container"><h4 class="et_pb_module_header"><small>Week 4</small>Delivery &amp; review</h4><div class="et_pb_blurb_description"><p>Live findings session with leadership, then the written deliverables.</p></div></div></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Phase blurbs — dark section</span><code>row: mm-phase-row mm-phase-dark · blurb: mm-phase</code></div>
+      </div>
+    </section>
+
+    <!-- 10 LAYOUT -->
+    <section class="ref-section" id="layout">
+      <h2><span class="ref-num">10</span> Layout Blocks</h2>
+      <p class="ref-lede">Multi-part composed blocks: step grids, before/after, the who-we-work-with grid, the transform grid, symptom chips, and the angled divider.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="padding:20px 28px;">
+          <div class="et_pb_row mm-system-detail-row">
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p class="mm-system-number">01</p><h3>Positioning System™</h3><p>Whether the market understands what you actually sell, who it’s for, and why it beats the alternative.</p><p>Positioning failures are quiet. Nothing breaks — deals just take longer, discounting creeps in, and every rep tells the story slightly differently.</p></div></div>
+            </div>
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p class="mm-system-count">Ten<br>subsystems</p><ol class="mm-subsystem-list"><li>Market Position</li><li>Differentiation</li><li>Competitive Positioning</li><li>Messaging</li><li>Value Proposition</li><li>Ideal Customer Profile</li><li>Offer Strategy</li><li>Pricing Strategy</li><li>Brand Identity</li><li>Go-to-Market Strategy</li></ol></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>System detail — two Divi columns with a two-column ordered list</span><code>row: mm-system-detail-row · list: mm-subsystem-list</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-select-grid">
+            <label class="mm-select-item"><input type="checkbox"><span>Revenue feels unpredictable despite demand being fine.</span></label>
+            <label class="mm-select-item"><input type="checkbox" checked><span>The CRM exists. Nobody entirely trusts what’s in it.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Follow-up quality depends on who happened to catch it.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Sales and marketing each have a theory about the other.</span></label>
+            <label class="mm-select-item"><input type="checkbox" checked><span>Forecasting is intuition wearing a spreadsheet.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>You still have to be in the room for deals to close.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Marketing spend can’t be traced to pipeline with confidence.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Headcount grew. Clarity didn’t grow with it.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Important knowledge lives in one person and no system.</span></label>
+            <label class="mm-select-item"><input type="checkbox"><span>Everything technically works, and everything takes you.</span></label>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Interactive symptom checklist — select any row</span><code>Code module: mm-select-grid + mm-select-item</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage mm-principles-stack" style="padding:18px 28px;">
+          <div class="et_pb_row mm-principles-row">
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>Systems before people. Always.</h3><p>The problem is never Susan. The problem is the system Susan has been quietly compensating for. No finding in our report will ever name a person as the constraint.</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>No software recommendations in week one.</h3><p>New tools laid on top of unclear structure produce faster confusion. We won’t propose a platform until we can describe the process it’s meant to run.</p></div></div></div>
+          </div>
+          <div class="et_pb_row mm-principles-row">
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>Operators get interviewed, not just leaders.</h3><p>The people executing the process every day know where it breaks. They are rarely asked. That asymmetry is where most of the findings live.</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>You own the findings.</h3><p>The report is yours whether or not you ever work with us again. It isn’t written to require us, and it isn’t withheld to create leverage.</p></div></div></div>
+          </div>
+          <div class="et_pb_row mm-principles-row">
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>We’ll tell you what isn’t broken.</h3><p>Consultants are structurally incentivized to find problems everywhere. Sometimes three of your five systems are healthy, and saying so is part of the job.</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text"><div class="et_pb_text_inner"><h3>Every workaround has interest.</h3><p>Nothing gets removed before we understand what it was paying for. Delete the workaround, keep the debt, and you’ve made the situation worse with excellent intentions.</p></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Three-row principles grid — two Divi columns per row</span><code>section: mm-principles-stack · rows: mm-principles-row</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:#f6f2ea; padding:18px;">
+          <div class="et_pb_row mm-split-dark-row">
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p class="mm-split-kicker">The part clients remember</p><h3>PBJ Sessions™</h3><p>Structured cross-functional working sessions where marketing, sales, and operations map the same process at the same time — out loud, in front of each other.</p><p>It sounds simple. It is reliably the most uncomfortable and most valuable ninety minutes of the engagement.</p><p>These sessions are where Shadow Systems™ surface and the room gets very productive.</p></div></div>
+            </div>
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><h4>Who’s in the room</h4><ul><li>The founder or CEO</li><li>Whoever owns marketing</li><li>Whoever owns sales</li><li>Whoever owns operations or delivery</li><li>At least one person who does the work daily</li></ul><h4>The rules</h4><ul><li>We map what actually happens, not what should</li><li>Workarounds get documented, not corrected</li><li>No one is defending a number</li><li>Systems before people. Always.</li></ul></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Forest / dark split row — two equal Divi columns</span><code>row: mm-split-dark-row · optional label: mm-split-kicker</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="padding:22px 28px;">
+          <div class="et_pb_row mm-phase-detail-row">
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p class="mm-phase-detail-number">01</p><p class="mm-phase-detail-kicker">Days 1–3</p></div></div>
+            </div>
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><h3>Intake &amp; system review</h3><p>We read your system before we meet your people, so the sessions aren’t spent on things a login could have told us.</p></div></div>
+            </div>
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><ul><li>Structured intake surveys across leadership</li><li>Read-only access to CRM, analytics, and workflow tools</li><li>Review of existing process docs, however aspirational</li><li>First pass at the lead-to-revenue map</li></ul></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Three-column phase detail row — phase/timing · summary · deliverables</span><code>row: mm-phase-detail-row</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:#f6f2ea; padding:18px;">
+          <div class="et_pb_row mm-lens-row">
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p class="mm-lens-kicker">Lens 01</p><h3>Detective</h3></div></div>
+            </div>
+            <div class="et_pb_column">
+              <div class="et_pb_text"><div class="et_pb_text_inner"><p>We follow the evidence, not the org chart. Interviews with founders, leaders, and — critically — the operators who actually run the process every day. CRM records, pipeline history, lead sources, response times, handoff points, and the exports nobody has looked at in a year.</p><blockquote><p><strong>What we're establishing:</strong> what is verifiably true about how revenue moves through your company, independent of what anyone believes about it.</p></blockquote></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Lens / perspective row — blockquote renders as the establishing line</span><code>row: mm-lens-row · left text: mm-lens-kicker + heading</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-step-grid ref-row" style="gap:2.5rem; align-items:flex-start;">
+            <div class="mm-step" style="flex:1; min-width:160px;"><h4>Diagnose</h4><p>Find where revenue actually leaks.</p></div>
+            <div class="mm-step" style="flex:1; min-width:160px;"><h4>Rebuild</h4><p>Redesign the offer and pricing.</p></div>
+            <div class="mm-step" style="flex:1; min-width:160px;"><h4>Scale</h4><p>Systematize what now works.</p></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Process steps</span><code>mm-step-grid + mm-step</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="ref-row" style="gap:2rem; align-items:flex-start;">
+            <div class="mm-before" style="flex:1; min-width:200px;"><h4>Before</h4><ul><li>Guessing at price</li><li>Random discounts</li><li>Feast or famine</li></ul></div>
+            <div class="mm-after" style="flex:1; min-width:200px;"><h4>After</h4><ul><li>Priced with intent</li><li>Consistent margin</li><li>Predictable pipeline</li></ul></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Before / after columns</span><code>mm-before · mm-after</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-who-grid">
+            <div class="mm-who-col"><h4>This is built for you if...</h4><ul><li>You have real demand and meaningful revenue activity</li><li>Growth has outpaced the systems that produced it</li><li>Everything still routes through the founder</li><li>You want structural clarity, not another lead-gen tactic</li><li>Your team can commit attention and access for three to four weeks</li><li>You’re willing to have your systems examined honestly</li></ul></div>
+            <div class="mm-who-col"><h4>This isn’t the right time if...</h4><ul><li>You’re still validating whether the business model works</li><li>Revenue is inconsistent or minimal</li><li>What you actually want is marketing execution</li><li>You’re looking for a fast lead-gen fix without operational change</li><li>Documenting and evaluating existing process is off the table</li><li>You need the system installed rather than investigated — that’s Contractor Maven</li></ul></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Two-column fit grid</span><code>mm-who-grid + mm-who-col</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:var(--ref-sand);">
+          <div class="mm-transform-grid">
+            <div class="mm-transform-before"><h4>The old way</h4><ul><li>Effort priced by the hour</li><li>Scope creep eats margin</li><li>Value invisible to buyer</li></ul></div>
+            <div class="mm-transform-after"><h4>The Maven way</h4><ul><li>Outcome priced by result</li><li>Fixed scope, clear line</li><li>Value made legible</li></ul></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Transform grid (light + dark halves)</span><code>mm-transform-grid + mm-transform-before · -after</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-symptom-stack">
+            <span class="mm-symptom">Pricing feels random</span>
+            <span class="mm-symptom is-active">Discounting reflex</span>
+            <span class="mm-symptom">No pipeline</span>
+            <span class="mm-symptom">Undercharging</span>
+            <span class="mm-symptom is-active">Scope creep</span>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Hero symptom chips — <strong>.is-active is toggled by JS on the live site</strong></span><code>mm-symptom-stack + mm-symptom</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:var(--ref-sand);">
+          <div class="maven-divider"><h2 style="font-family:'Instrument Serif',serif; font-weight:400; margin:0;">The belief</h2></div>
+        </div>
+        <div class="ref-demo-label"><span>Angled divider — legacy naming, rename during child-theme cutover</span><code>maven-divider</code></div>
+      </div>
+    </section>
+
+    <!-- 11 DARK -->
+    <section class="ref-section" id="dark">
+      <h2><span class="ref-num">11</span> Dark Sections</h2>
+      <p class="ref-lede">Drop <code>mm-bg-forest</code> or <code>mm-bg-dark</code> on a section and text, links, rules, and components recolor automatically for legibility.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-dark mm-bg-forest">
+          <p class="mm-eyebrow mm-eyebrow-teal">On forest</p>
+          <div class="mm-text">
+            <h3>Everything inverts cleanly</h3>
+            <p>Body text softens to near-paper, <a href="#">links turn teal-bright</a>, and rules follow.</p>
+            <blockquote>Blockquotes shift to teal-bright with a matching rule.</blockquote>
+          </div>
+          <div class="mm-cta-row" style="margin-top:1rem;"><p><span class="mm-cta-primary"><a href="#">Primary still ember</a></span> <span class="mm-cta-ghost mm-cta-ghost-light"><a href="#">Light ghost link</a></span></p></div>
+        </div>
+        <div class="ref-demo-label"><span>Forest section</span><code>mm-bg-forest</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-dark mm-bg-dark mm-table mm-table-forest">
+          <table>
+            <thead><tr><th>Lever</th><th>Effect</th></tr></thead>
+            <tbody>
+              <tr><td>Reposition</td><td>Higher willingness to pay.</td></tr>
+              <tr><td>Repackage</td><td>Clearer buying decision.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ref-demo-label"><span>Table on dark</span><code>mm-table mm-table-forest</code></div>
+      </div>
+    </section>
+
+    <!-- 14 LONGFORM -->
+    <section class="ref-section" id="longform">
+      <h2><span class="ref-num">14</span> Longform / Editorial</h2>
+      <p class="ref-lede">Components for blog and manifesto body copy composed in Text modules — emphasis spans, ledes, pull quotes, callouts, stats, and structural breaks.</p>
+
+      <div class="ref-sub" style="margin-top:0;">Inline emphasis</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <p style="margin:0; font-size:1.05rem;">Growth stalls when <span class="attn-ember">nobody owns the handoff</span>, and it compounds when <span class="attn-teal">the system stays invisible</span>.</p>
+        </div>
+        <div class="ref-demo-label"><span>Attention spans (light variants for dark sections)</span><code>attn-ember · attn-teal · attn-ember-light · attn-teal-light</code></div>
+      </div>
+
+      <div class="ref-sub">Eyebrow variants</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <p class="mm-eyebrow mm-eyebrow-micro" style="margin:0 0 .5rem;">Micro eyebrow</p>
+          <span class="mm-eyebrow-solo">Solo eyebrow — ember</span><br>
+          <span class="mm-eyebrow-solo teal">Solo eyebrow — teal</span>
+        </div>
+        <div class="ref-demo-label"><span>Extended eyebrows</span><code>mm-eyebrow-micro · mm-eyebrow-solo (+.teal/.light) · mm-eyebrow-light</code></div>
+      </div>
+
+      <div class="ref-sub">Ledes &amp; hooks</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <p class="mm-lede">The lede is a restrained lead paragraph for introductory copy, with <em>optional emphasized text</em>.</p>
+        </div>
+        <div class="ref-demo-label"><span>Lede (lead paragraph)</span><code>mm-lede</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <p class="mm-lede-statement">The statement lede is the same scale, set upright.</p>
+        </div>
+        <div class="ref-demo-label"><span>Lede (statement)</span><code>mm-lede-statement</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-hook" style="margin:0;">
+            <p>There is a digital billboard on 35W on the north side of Minneapolis that frequently reads:</p>
+            <p class="mm-hook-stat">1 in 4 drunk drivers die in car accidents.</p>
+            <p>That same statistic means <strong>3 in 4 don&rsquo;t.</strong></p>
+            <p>Both sentences use the same number. Neither is wrong.</p>
+            <p class="mm-hook-conclusion">This is not a math problem.<br><strong>It is a visibility problem.</strong></p>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Editorial Callout Card / primary article hook</span><code>mm-hook &middot; mm-hook-stat &middot; mm-hook-conclusion</code></div>
+      </div>
+      <div class="ref-cols">
+        <div class="ref-demo">
+          <div class="ref-demo-stage">
+            <div class="mm-hook" style="margin:0;"><p>The hook — italic body copy with an ember rule, for the observation that opens a piece.</p></div>
+          </div>
+          <div class="ref-demo-label"><span>Simple editorial hook</span><code>mm-hook</code></div>
+        </div>
+        <div class="ref-demo">
+          <div class="ref-demo-stage">
+            <p class="mm-lead-p">The lead paragraph — slightly larger, medium weight, full ink.</p>
+          </div>
+          <div class="ref-demo-label"><span>Lead paragraph</span><code>mm-lead-p</code></div>
+        </div>
+      </div>
+
+      <div class="ref-sub">Archetype profiles</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <article class="mm-archetype">
+            <h3>The Accidental Bottleneck</h3>
+            <p>The founder who became the operating system while trying to keep the company moving.</p>
+            <div class="mm-dash-list">
+              <ul>
+                <li>Every meaningful decision still routes through one person</li>
+                <li>The team waits for context that lives in the founder&rsquo;s head</li>
+                <li>Delegation moves tasks but not authority</li>
+              </ul>
+            </div>
+            <div class="mm-field-notes">
+              <div class="fn-label">Field notes</div>
+              <p>The founder is rarely controlling by intention. The system simply never learned how to decide without them.</p>
+            </div>
+            <p class="mm-archetype-framework"><strong>Framework:</strong> Authority &rarr; ownership &rarr; decision rights</p>
+          </article>
+          <article class="mm-archetype mm-archetype-ember">
+            <h3>The Heroic Workaround</h3>
+            <p>The operator whose personal save quietly became a load-bearing process.</p>
+            <p class="mm-archetype-framework"><strong>Emphasis variant:</strong> add <code>mm-archetype-ember</code> when one profile needs extra weight.</p>
+          </article>
+        </div>
+        <div class="ref-demo-label"><span>Archetype profile with optional ember emphasis</span><code>mm-archetype &middot; mm-archetype-framework &middot; mm-archetype-ember</code></div>
+      </div>
+
+      <div class="ref-sub">Pull quotes</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-pullquote"><p>The teal pull quote, for lines worth slowing down on.</p></div>
+          <div class="mm-pullquote mm-pullquote-ember" style="margin-top:1rem;"><p>The ember variant, for the provocative ones.</p></div>
+        </div>
+        <div class="ref-demo-label"><span>Pull quotes</span><code>mm-pullquote · mm-pullquote-ember · mm-pullquote-light</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-pullquote-boxed" style="margin:0;">"You can't fix what you can't see."<span class="attribution">— The Revenue Architecture Manifesto</span></div>
+        </div>
+        <div class="ref-demo-label"><span>Boxed centerpiece quote</span><code>mm-pullquote-boxed + .attribution</code></div>
+      </div>
+
+      <div class="ref-sub">Callout boxes</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-callout" style="margin:0 0 1rem;"><span class="mm-callout-label">Definition</span><p>The teal callout — for definitions and key takeaways inside body copy.</p></div>
+          <div class="mm-callout mm-callout-ember" style="margin:0 0 1rem;"><span class="mm-callout-label">Warning</span><p>The ember callout — for cautions and counterintuitive points.</p></div>
+          <div class="mm-callout mm-callout-dark" style="margin:0;"><span class="mm-callout-label">Core concept</span><p>The dark callout — for the ideas that anchor a piece.</p></div>
+        </div>
+        <div class="ref-demo-label"><span>Content callouts (≠ friction-section fx-callouts, §18)</span><code>mm-callout + mm-callout-label · -ember · -dark</code></div>
+      </div>
+
+      <div class="ref-sub">Field notes &amp; stats</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="padding:20px 28px;">
+          <div class="et_pb_row mm-stat-strip">
+            <div class="et_pb_column"><div class="et_pb_text mm-text"><div class="et_pb_text_inner"><p class="mm-stat-num">5</p><p class="mm-eyebrow mm-eyebrow-micro">Systems</p><p class="mm-stat-label">Positioning, Authority, Conversion, Lifecycle, Visibility</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text mm-text"><div class="et_pb_text_inner"><p class="mm-stat-num">10</p><p class="mm-eyebrow mm-eyebrow-micro">Subsystems each</p><p class="mm-stat-label">Fifty named components, scored individually</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text mm-text"><div class="et_pb_text_inner"><p class="mm-stat-num">4</p><p class="mm-eyebrow mm-eyebrow-micro">Angles per subsystem</p><p class="mm-stat-label">Each component examined four ways</p></div></div></div>
+            <div class="et_pb_column"><div class="et_pb_text mm-text"><div class="et_pb_text_inner"><p class="mm-stat-num">200</p><p class="mm-eyebrow mm-eyebrow-micro">Evaluation points</p><p class="mm-stat-label">The full instrument, end to end</p></div></div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Four-column Divi stat strip</span><code>row: mm-stat-strip · text: mm-stat-num + eyebrow + mm-stat-label</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-field-notes" style="margin:0;"><div class="fn-label">Field notes</div><p>Dashed sand box for observations from real engagements — anonymized, specific, human.</p></div>
+        </div>
+        <div class="ref-demo-label"><span>Field notes</span><code>mm-field-notes + fn-label</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-sources" style="margin-top:0;">
+            <p class="mm-sources-label">Sources</p>
+            <p>1. Associated Press. &ldquo;Small businesses confront the hidden cost of disconnected systems.&rdquo; May 14, 2026. <a href="#">Read the report</a>.</p>
+            <p>2. U.S. Small Business Administration. &ldquo;Frequently Asked Questions About Small Business.&rdquo; March 2026. <a href="#">View the data</a>.</p>
+            <p>3. Marketplace Maven. &ldquo;Revenue architecture begins at the handoff.&rdquo; July 8, 2026.</p>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>AP-style source list</span><code>mm-sources &middot; mm-sources-label</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-forest">
+          <div class="mm-sources mm-sources-light" style="margin-top:0;">
+            <p class="mm-sources-label">Sources</p>
+            <p>1. Marketplace Maven. &ldquo;The Revenue Architecture Manifesto.&rdquo; <a href="#">Read the series</a>.</p>
+            <p>2. Internal diagnostic research, anonymized aggregate findings, 2024&ndash;2026.</p>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Source list on dark</span><code>mm-sources mm-sources-light</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-stat-row">
+            <div class="mm-stat-card"><div class="mm-stat-num">73%</div><div class="mm-stat-label">of friction lives between departments, not inside them</div></div>
+            <div class="mm-stat-card mm-stat-card-ember"><div class="mm-stat-num">5×</div><div class="mm-stat-label">longer to diagnose than to fix, on average</div></div>
+            <div class="mm-stat-card"><div class="mm-stat-num">$1M→$5M</div><div class="mm-stat-label">the range where systems debt comes due</div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Stat row</span><code>mm-stat-row + mm-stat-card (+ -ember)</code></div>
+      </div>
+
+      <div class="ref-sub">Structure</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-section-break" style="margin:0 0 1.5rem;"><span>Part Two</span></div>
+          <hr class="mm-divider" style="margin:0 0 1.5rem;">
+          <hr class="mm-divider-teal" style="margin:0;">
+        </div>
+        <div class="ref-demo-label"><span>Breaks &amp; dividers (light variants for dark)</span><code>mm-section-break · mm-divider · mm-divider-teal · -light</code></div>
+      </div>
+
+      <div class="ref-sub">Beliefs &amp; steps</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <ul class="mm-beliefs">
+            <li>Customers experience one company, not departmental boundaries.</li>
+            <li>Most communication problems are visibility problems.</li>
+            <li>You cannot improve a system you cannot perceive.</li>
+          </ul>
+        </div>
+        <div class="ref-demo-label"><span>Belief lines</span><code>mm-beliefs (+ -light)</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <ol class="mm-steps">
+            <li><h4>Discover</h4><p>Surface what's really happening.</p></li>
+            <li><h4>Map</h4><p>Visualize systems, flows, and friction.</p></li>
+            <li><h4>Design</h4><p>Build the right fixes in the right order.</p></li>
+          </ol>
+        </div>
+        <div class="ref-demo-label"><span>Vertical numbered steps</span><code>mm-steps (+ -light)</code></div>
+      </div>
+
+      <div class="ref-sub">Panels</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-two-col" style="margin:0;">
+            <div class="card"><h4>What leadership believes</h4><p>The CRM reflects reality and teams are aligned.</p></div>
+            <div class="card"><h4>What operations experiences</h4><p>Spreadsheets, Slack threads, and tribal memory.</p></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Two-column cards</span><code>mm-two-col + .card</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage" style="background:var(--ref-sand);">
+          <div class="mm-system-grid">
+            <div class="mm-system-side check"><h4>A designed system</h4><ul><li>Handoffs are owned</li><li>Data agrees with itself</li><li>Friction is visible</li></ul></div>
+            <div class="mm-system-side x deep"><h4>An accidental system</h4><ul><li>Handoffs are hoped for</li><li>Every report tells a different story</li><li>Friction hides in workarounds</li></ul></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>System grid</span><code>mm-system-grid + mm-system-side (.check/.x/.deep)</code></div>
+      </div>
+
+      <div class="ref-sub">Footer pieces</div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-related" style="margin-top:0; border-top:none; padding-top:0;">
+            <div class="related-label">Related reading</div>
+            <div class="mm-related-links"><a href="#">Shadow Systems™</a><a href="#">Visibility Debt™</a><a href="#">Coordination Friction™</a></div>
+          </div>
+          <p class="mm-footnote" style="margin-top:1.5rem;">The footnote — small soft-ink type for methodology notes and disclaimers. A light variant exists for dark sections.</p>
+        </div>
+        <div class="ref-demo-label"><span>Related links + footnote</span><code>mm-related + related-label + mm-related-links · mm-footnote (+ -light)</code></div>
+      </div>
+    </section>
+
+    <!-- 15 BLOG -->
+    <section class="ref-section" id="blog">
+      <h2><span class="ref-num">15</span> Blog Modules</h2>
+      <p class="ref-lede">Apply <code>mm-blog-grid</code> or <code>mm-blog-list</code> to a Divi Blog module. Markup below mirrors Divi's output.</p>
+      <div class="ref-note"><strong>Opt-in PHP enhancement:</strong> the category badge (<code>mm-blog-badge</code>) and reading-time footer (<code>mm-blog-footer</code>) are injected only when the Divi Blog module has <code>mm-blog-grid</code> or <code>mm-blog-list</code>. Plain Blog modules remain untouched.</div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-sand mm-blog-grid">
+          <div class="et_pb_posts" style="grid-template-columns: repeat(2, 1fr);">
+            <article class="et_pb_post">
+              <div class="mm-blog-thumb">
+                <span class="mm-blog-badge">Shadow Systems™</span>
+                <a class="entry-featured-image-url" href="#"><img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%23ECE6D9'/%3E%3Ctext x='300' y='205' text-anchor='middle' fill='%236B6560' font-family='sans-serif' font-size='16'%3EFeatured image%3C/text%3E%3C/svg%3E" alt=""></a>
+              </div>
+              <div class="mm-blog-body">
+                <h2 class="entry-title"><a href="#">The spreadsheet nobody admits is running the company</a></h2>
+                <p class="post-meta">Operations <span class="mm-meta-sep">·</span> Jul 2026</p>
+                <div class="post-content"><p>Every growth-stage company has one. Here's how to find yours before it fails.</p></div>
+              </div>
+              <a class="mm-blog-footer" href="#"><span class="mm-blog-footer-time">6 min read</span><span class="mm-meta-arrow">→</span></a>
+            </article>
+            <article class="et_pb_post">
+              <div class="mm-blog-thumb">
+                <span class="mm-blog-badge">Core Concept</span>
+                <a class="entry-featured-image-url" href="#"><img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%23ECE6D9'/%3E%3Ctext x='300' y='205' text-anchor='middle' fill='%236B6560' font-family='sans-serif' font-size='16'%3EFeatured image%3C/text%3E%3C/svg%3E" alt=""></a>
+              </div>
+              <div class="mm-blog-body">
+                <h2 class="entry-title"><a href="#">Visibility Debt™: the interest compounds quietly</a></h2>
+                <p class="post-meta">Frameworks <span class="mm-meta-sep">·</span> Jun 2026</p>
+                <div class="post-content"><p>What organizations cannot see becomes the most expensive thing they own.</p></div>
+              </div>
+              <a class="mm-blog-footer" href="#"><span class="mm-blog-footer-time">9 min read</span><span class="mm-meta-arrow">→</span></a>
+            </article>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Grid cards (3-up on desktop; 2-up shown)</span><code>mm-blog-grid</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-sand">
+          <div class="et_pb_blog_extras mm-core-concepts">
+            <div class="et_pb_ajax_pagination_container">
+              <article class="et_pb_post"><h2 class="entry-title"><a href="#">Systems Not Tactics™</a></h2><div class="post-content"><p>The mallet comes down. Direct hit. A different mole appears two holes over. The work is not wrong; the system is unnamed.</p><a class="more-link" href="#">Read more</a></div></article>
+              <article class="et_pb_post"><h2 class="entry-title"><a href="#">What Is a PBJ Session?</a></h2><div class="post-content"><p>The gap between what leadership thinks happens and what actually happens is where every revenue problem hides.</p><a class="more-link" href="#">Read more</a></div></article>
+              <article class="et_pb_post"><h2 class="entry-title"><a href="#">What Are Founder Blindspots?™</a></h2><div class="post-content"><p>A founder's proximity to the business makes them a remarkably unreliable observer of the system around them.</p><a class="more-link" href="#">Read more</a></div></article>
+              <article class="et_pb_post"><h2 class="entry-title"><a href="#">What Is Visibility Debt?™</a></h2><div class="post-content"><p>Visibility Debt happens when an organization grows faster than its ability to see itself honestly.</p><a class="more-link" href="#">Read more</a></div></article>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Core Concepts — equal-height native Blog cards</span><code>Blog module: mm-core-concepts</code></div>
+      </div>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-sand mm-blog-list">
+          <div class="et_pb_posts">
+            <article class="et_pb_post">
+              <div class="mm-blog-thumb">
+                <span class="mm-blog-badge">Manifesto</span>
+                <a class="entry-featured-image-url" href="#"><img src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400'%3E%3Crect width='600' height='400' fill='%23ECE6D9'/%3E%3Ctext x='300' y='205' text-anchor='middle' fill='%236B6560' font-family='sans-serif' font-size='16'%3EFeatured image%3C/text%3E%3C/svg%3E" alt=""></a>
+              </div>
+              <div class="mm-blog-body">
+                <h2 class="entry-title"><a href="#">Nobody designed how the systems work together</a></h2>
+                <p class="post-meta">Manifesto <span class="mm-meta-sep">·</span> Ch. 2</p>
+                <div class="post-content"><p>Departments optimize independently. The friction lives in between.</p></div>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>List variant (thumb left, stacks on mobile)</span><code>mm-blog-list</code></div>
+      </div>
+
+      <div class="ref-sub">Archive sidebar filters</div>
+      <div class="ref-demo-grid">
+        <div class="ref-demo"><div class="ref-demo-stage"><div class="sidebar-block" style="margin:0;"><div class="sidebar-title">Explore by Category</div><ul class="mm-cat-list"><li><button class="mm-cat-pill active" style="--pill-accent:#6B6560"><span class="left"><span class="dot"></span>All Posts</span><span class="count">15</span></button></li><li><button class="mm-cat-pill" style="--pill-accent:#05A4A3"><span class="left"><span class="dot"></span>Core Concepts</span><span class="count">4</span></button></li></ul></div></div><div class="ref-demo-label"><span>Category filter — colored dots only</span><code>[mm_category_filter]</code></div></div>
+        <div class="ref-demo"><div class="ref-demo-stage"><div class="sidebar-block" style="margin:0;"><div class="sidebar-title">Featured</div><ol class="mm-tag-list"><li><a href="#">The Revenue Health Matrix™ Deep Dive</a></li><li><a href="#">Systems Not Tactics</a></li></ol></div></div><div class="ref-demo-label"><span>Featured list — custom teal counters only</span><code>[mm_tag_widget]</code></div></div>
+      </div>
+      <div class="ref-note"><strong>Archive sidebar filters — custom markers only:</strong> native Divi bullets and ordered-list numbers are suppressed so they never duplicate the component markers.</div>
+    </section>
+
+    <!-- 16 LENS -->
+    <section class="ref-section" id="lens">
+      <h2><span class="ref-num">16</span> Lens / Topic Grid</h2>
+      <p class="ref-lede">Topic navigation cards — 4-up on desktop, 2-up tablet, stacked mobile. Hover for lift + arrow slide.</p>
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-sand">
+          <div class="mm-lens-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <a class="mm-lens-card" href="#">
+              <span class="mm-lens-icon">◎</span>
+              <span class="mm-lens-content"><h3>Positioning</h3><p>Clarity creates alignment.</p></span>
+              <span class="mm-lens-footer">Explore <span class="mm-lens-arrow">→</span></span>
+            </a>
+            <a class="mm-lens-card" href="#">
+              <span class="mm-lens-icon">⇄</span>
+              <span class="mm-lens-content"><h3>Conversion</h3><p>Attracting is just the beginning.</p></span>
+              <span class="mm-lens-footer">Explore <span class="mm-lens-arrow">→</span></span>
+            </a>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Lens cards (2 of 4 shown)</span><code>mm-lens-grid + mm-lens-card + mm-lens-icon/-content/-footer/-arrow</code></div>
+      </div>
+    </section>
+
+    <!-- 17 MANIFESTO -->
+    <section class="ref-section" id="manifesto">
+      <h2><span class="ref-num">17</span> Manifesto</h2>
+      <p class="ref-lede">The literary register: serif body at 19px/1.85, sticky sidebar nav with accordion parts. Wrap the post in <code>manifesto-post</code>.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage">
+          <div class="mm-page" style="padding:0;">
+            <div class="mm-breadcrumb">Manifesto <span>/</span> Part One <span>/</span> Chapter 2</div>
+            <div class="mm-layout">
+              <aside class="mm-sidebar" style="position:static;">
+                <div class="mm-sidebar-label">Contents</div>
+                <nav class="manifesto-sidebar-nav">
+                  <details class="msn-part" open>
+                    <summary class="msn-part-title">Part One — The Problem</summary>
+                    <div class="msn-part-body">
+                      <div class="msn-chapter">
+                        <div class="msn-chapter-title">Prologue</div>
+                        <ul class="msn-section-list">
+                          <li><a href="#"><span class="msn-num">0.</span> Why a manifesto</a></li>
+                        </ul>
+                      </div>
+                      <div class="msn-chapter">
+                        <div class="msn-chapter-title">Chapter 1</div>
+                        <ul class="msn-section-list">
+                          <li><a href="#"><span class="msn-num">1a.</span> What worked at $1M</a></li>
+                          <li class="msn-current"><a href="#"><span class="msn-num">1b.</span> Nobody designed this</a></li>
+                          <li><a href="#"><span class="msn-num">1c.</span> The invisible friction</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </details>
+                  <details class="msn-part">
+                    <summary class="msn-part-title">Part Two — The Lens</summary>
+                  </details>
+                </nav>
+              </aside>
+              <article class="manifesto-post">
+                <span class="manifesto-part">Part One · Chapter Two</span>
+                <h1>Nobody designed how the systems work together</h1>
+                <p class="manifesto-open">Every department was built with good intentions. Marketing built its engine. Sales built its process. Finance built its controls.</p>
+                <p>And then growth arrived, and the seams began to show. Not inside the departments — between them.</p>
+                <div class="manifesto-pullquote">The friction isn't in your departments. It's in the handoffs nobody owns.</div>
+                <hr class="manifesto-break">
+                <p class="manifesto-stack">The CRM says one thing.</p>
+                <p class="manifesto-stack">The spreadsheet says another.</p>
+                <p class="manifesto-stack">The team believes a third.</p>
+                <span class="manifesto-tag">#IWroteAManifesto</span>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Post body + sidebar nav (Part → Chapter → Posts)</span><code>mm-layout + mm-sidebar + manifesto-post · manifesto-open/-stack/-pullquote/-break/-part/-tag · msn-* (+ msn-chapter)</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-sand">
+          <div class="manifesto-card-grid" style="grid-template-columns: repeat(2, 1fr) !important; margin:0 !important;">
+            <article class="manifesto-card">
+              <span class="mc-section">1a</span>
+              <h3 class="mc-title"><a href="#">What worked at $1M</a></h3>
+              <p class="mc-excerpt">The systems that carried you here were built for a smaller company — and they kept the receipts.</p>
+              <a class="mc-read" href="#">Read →</a>
+            </article>
+            <article class="manifesto-card">
+              <span class="mc-section">1b</span>
+              <h3 class="mc-title"><a href="#">Nobody designed this</a></h3>
+              <p class="mc-excerpt">Every department was built with good intentions. The seams between them were built by accident.</p>
+              <a class="mc-read" href="#">Read →</a>
+            </article>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Chapter post cards — [manifesto_posts] shortcode</span><code>manifesto-card-grid + manifesto-card + mc-section/-title/-excerpt/-read</code></div>
+      </div>
+    </section>
+
+    <!-- 18 FRICTION -->
+    <section class="ref-section" id="friction">
+      <h2><span class="ref-num">18</span> Friction Section</h2>
+      <p class="ref-lede">The homepage "Real Problem" section. Imported via <code>mm-friction-section-layout.json</code>; department icons live in <code>/mm-icons/</code>. The bridge photo is set inline in the code module.</p>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-abyss">
+          <div class="et_pb_blurb mm-dept-blurb mm-dept-teal" style="max-width:280px;">
+            <div class="et_pb_blurb_content">
+              <div class="et_pb_main_blurb_image"><img src="mm-icons/mm-icon-marketing.svg" alt=""></div>
+              <div class="et_pb_blurb_container">
+                <h4 class="et_pb_module_header">Marketing</h4>
+                <div class="et_pb_blurb_description"><p>Generating demand and awareness.</p></div>
+              </div>
+            </div>
+          </div>
+          <div class="et_pb_blurb mm-dept-blurb mm-dept-ember" style="max-width:280px; margin-bottom:0 !important;">
+            <div class="et_pb_blurb_content">
+              <div class="et_pb_main_blurb_image"><img src="mm-icons/mm-icon-product.svg" alt=""></div>
+              <div class="et_pb_blurb_container">
+                <h4 class="et_pb_module_header">Product</h4>
+                <div class="et_pb_blurb_description"><p>Building the right solutions customers actually need.</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Department blurbs (color variants: teal/green/amber/purple/ember)</span><code>mm-dept-blurb + mm-dept-{color} · mm-dept-col-left/right</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-abyss" style="padding:1rem;">
+          <div class="mm-bridge-frame">
+            <div class="mm-bridge-media" style="background-image:url('bridge.jpg');"></div>
+            <div class="mm-friction-circle-wrap">
+              <div class="mm-friction-circle">
+                <div class="mm-fc-title">Invisible<br>Friction</div>
+                <div class="mm-fc-list">Handoffs. Delays.<br>Gaps. Assumptions.<br>Workarounds. Misalignment.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Bridge + friction circle (drop bridge.jpg in this folder to preview)</span><code>mm-bridge-frame + mm-bridge-media + mm-friction-circle</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-abyss ref-cols">
+          <div class="et_pb_blurb mm-fx-callout mm-fx-callout-ember">
+            <div class="et_pb_blurb_content"><div class="et_pb_blurb_container">
+              <h4 class="et_pb_module_header">Bottlenecks</h4>
+              <div class="et_pb_blurb_description"><p>Too much work converges here. Everything slows.</p></div>
+            </div></div>
+          </div>
+          <div class="et_pb_blurb mm-fx-callout mm-fx-callout-amber">
+            <div class="et_pb_blurb_content"><div class="et_pb_blurb_container">
+              <h4 class="et_pb_module_header">Handoff Gaps</h4>
+              <div class="et_pb_blurb_description"><p>Critical context gets lost in transition.</p></div>
+            </div></div>
+          </div>
+          <div class="et_pb_blurb mm-fx-callout mm-fx-callout-purple">
+            <div class="et_pb_blurb_content"><div class="et_pb_blurb_container">
+              <h4 class="et_pb_module_header">Broken Paths</h4>
+              <div class="et_pb_blurb_description"><p>Work stalls or disappears. No visibility.</p></div>
+            </div></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Friction callouts (renamed from mm-callout to avoid §14 clash)</span><code>mm-fx-callout + mm-fx-callout-ember · -amber · -purple</code></div>
+      </div>
+
+      <div class="ref-demo">
+        <div class="ref-demo-stage is-abyss ref-cols" style="align-items:stretch;">
+          <div class="mm-traffic-key">
+            <div class="mm-tk-label">Traffic Key</div>
+            <div class="mm-tk-items">
+              <div class="mm-tk-item"><span class="mm-tk-swatch" style="background:#7DC855;"></span><div><div class="mm-tk-name">Healthy flow</div><div class="mm-tk-desc">Moving efficiently</div></div></div>
+              <div class="mm-tk-item"><span class="mm-tk-swatch" style="background:#F5A623;"></span><div><div class="mm-tk-name">Slowing down</div><div class="mm-tk-desc">Some friction</div></div></div>
+              <div class="mm-tk-item"><span class="mm-tk-swatch" style="background:#F05223;"></span><div><div class="mm-tk-name">Congested</div><div class="mm-tk-desc">High friction</div></div></div>
+              <div class="mm-tk-item"><span class="mm-tk-swatch" style="background:#B06FD8;"></span><div><div class="mm-tk-name">Disconnected</div><div class="mm-tk-desc">No flow</div></div></div>
+            </div>
+          </div>
+          <div class="mm-tagline-card">
+            <div class="mm-tagline-big">You can't fix what you can't see.<em>We make the invisible visible — so you can remove friction and keep revenue moving forward.</em></div>
+          </div>
+        </div>
+        <div class="ref-demo-label"><span>Traffic key + tagline card</span><code>mm-traffic-key + mm-tk-* · mm-tagline-card + mm-tagline-big</code></div>
+      </div>
+    </section>
+
+    <footer style="margin-top:4rem; padding-top:1.5rem; border-top:1px solid var(--ref-rule); color:var(--ref-soft); font-size:.8rem;">
+      Marketplace Maven Style System · generated reference · styles served live from <code style="font-family:'JetBrains Mono',monospace;">mm-styles.css</code> · section numbers match the CSS TOC (12 = responsive, no demo)
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>
+

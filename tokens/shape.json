@@ -1,0 +1,15 @@
+{
+  "$description": "Shape and elevation tokens from mm-styles.css.",
+  "borderRadius": {
+    "sm": "2px",
+    "default": "3px",
+    "card": "4px"
+  },
+  "shadow": {
+    "paper": "0 1px 0 rgba(26, 40, 40, 0.04), 0 2px 6px rgba(26, 40, 40, 0.04)"
+  },
+  "rules": {
+    "default": "rgba(26, 40, 40, 0.14)",
+    "onDark": "rgba(255, 254, 250, 0.12)"
+  }
+}

@@ -1,23 +1,32 @@
 {
-  "$description": "Typography tokens as implemented in the Revenue Health Matrix Zoom Explorer. No broader Marketplace Maven type scale is defined yet — see BRAND-FOUNDATIONS-TODO.md.",
-  "fontFamily": {
-    "primary": "Inter, -apple-system, sans-serif",
-    "source": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+  "$description": "Marketplace Maven brand typography — the real, live type system from mm-styles.css. Three-typeface system: Instrument Serif for display/headings, Inter for body/labels, JetBrains Mono for code/eyebrow/data labels.",
+  "fontFamilies": {
+    "serif": "'Instrument Serif', Georgia, serif",
+    "body": "'Inter', ui-sans-serif, system-ui, sans-serif",
+    "mono": "'JetBrains Mono', ui-monospace, monospace"
   },
-  "weights": {
-    "regular": 400,
-    "medium": 500,
-    "semibold": 600
+  "googleFontsImport": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap",
+  "baseBody": {
+    "fontFamily": "body",
+    "fontSize": "17px",
+    "lineHeight": 1.65,
+    "color": "ink (#1A2828)"
   },
-  "scaleObserved": {
-    "$description": "Font sizes as used in the explorer component — not a formalized scale, just what's in the code today.",
-    "breadcrumb": "13px",
-    "hint": "12px",
-    "tooltip": "12px",
-    "areaCardLabel": "13px",
-    "subsystemNodeLabel": "12px",
-    "systemNodeLabel": "14px",
-    "systemDetailTitle": "16px",
-    "systemDetailMeta": "11px"
-  }
+  "headingScale": {
+    "$description": "Applies to h1-h3 in Instrument Serif (weight 400, letter-spacing -0.012em); h4-h6 switch to Inter for subheads/labels.",
+    "h1": { "fontSize": "44px", "lineHeight": 1.05, "family": "serif" },
+    "h2": { "fontSize": "38px", "lineHeight": 1.12, "family": "serif" },
+    "h3": { "fontSize": "27px", "lineHeight": 1.2, "family": "serif" },
+    "h4": { "fontSize": "20px (or 1.15rem/600 weight in .mm-text context)", "lineHeight": 1.3, "family": "body", "weight": 600 },
+    "h5": { "fontSize": "14px (or 0.78em uppercase label in .mm-text context)", "lineHeight": 1.4, "family": "body", "weight": 500, "textTransform": "uppercase", "letterSpacing": "0.14em" },
+    "h6": { "fontSize": "12px (or 0.68em uppercase label in .mm-text context)", "lineHeight": 1.4, "family": "body", "weight": 500, "textTransform": "uppercase", "letterSpacing": "0.16em" }
+  },
+  "specialTreatments": {
+    "blockquote": "Instrument Serif italic 400, color teal, 2px left border teal",
+    "dropcap": "first-letter set at 4.2em Instrument Serif, floated, color ember — for longform/editorial openings",
+    "displayEmphasis": "Instrument Serif italic, color ember — for inline emphasis in display text",
+    "marginNote": "Instrument Serif italic, color ink-soft, 0.95em — for asides",
+    "eyebrowLabel": "Inter, uppercase small label, color ink-soft (or ember/teal variants)"
+  },
+  "note": "The Revenue Health Matrix Zoom Explorer component currently uses only Inter, not this full 3-typeface system — see tokens/matrix-system-colors.json note about reconciling it with the brand system."
 }

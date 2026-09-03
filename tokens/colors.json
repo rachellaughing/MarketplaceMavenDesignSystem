@@ -1,26 +1,44 @@
 {
-  "$description": "Color tokens as implemented in the Revenue Health Matrix Zoom Explorer. These are the Matrix's per-system diagnostic colors, not (yet) a general Marketplace Maven brand palette — see BRAND-FOUNDATIONS-TODO.md.",
-  "systems": {
-    "positioning": { "label": "Positioning", "code": "POS", "color": "#3B82F6", "soft": "#EAF2FE" },
-    "authority": { "label": "Authority", "code": "AUTH", "color": "#10B981", "soft": "#E7F8F1" },
-    "conversion": { "label": "Conversion", "code": "CONV", "color": "#E11D48", "soft": "#FCEAEE" },
-    "lifecycle": { "label": "Lifecycle", "code": "LFC", "color": "#8B5CF6", "soft": "#F1ECFE" },
-    "visibility": { "label": "Visibility", "code": "VIS", "color": "#F59E0B", "soft": "#FEF3E2" }
+  "$description": "Marketplace Maven brand color tokens — the actual live palette from mm-styles.css (source/mm-styles.css), the canonical consolidated stylesheet for the Divi child theme. Supersedes the Matrix-explorer-only palette this repo started with.",
+  "surfaces": {
+    "paper": "#FFFEFA",
+    "sand": "#F6F2EA",
+    "sandDeep": "#ECE6D9",
+    "tealSoft": "#EDF2F0"
   },
-  "neutrals": {
-    "stageBackground": "#FAFAF8",
-    "stageBorder": "#E5E3DC",
-    "textPrimary": "#111111",
-    "textSecondary": "#666666",
-    "textMuted": "#888888",
-    "textFaint": "#999999",
-    "nodeLabel": "#333333",
-    "tooltipBackground": "#1a1a1a",
-    "tooltipText": "#ffffff"
+  "ink": {
+    "ink": "#1A2828",
+    "inkSoft": "#6B6560"
   },
-  "softTintFormula": {
-    "$description": "The 'soft' background tint per system is not hand-picked — it's derived from the system's hex via HSL, preserving hue so each system stays visibly distinct instead of collapsing to the same pale off-white.",
-    "algorithm": "convert hex to HSL, cap saturation at 65%, fix lightness to 93%",
-    "reference": "see hexToSoft() in components/revenue-matrix-explorer/revenue-matrix-zoom-explorer.html"
+  "teal": {
+    "teal": "#137474",
+    "tealMid": "#2C7A6E",
+    "tealBright": "#22BDC1",
+    "tealPale": "#EDF7F7"
+  },
+  "ember": {
+    "$description": "Primary CTA / action color.",
+    "ember": "#F05223",
+    "emberHover": "#D6431A",
+    "emberPale": "#FDF0EA"
+  },
+  "notePale": "#FFFCEF",
+  "darkSections": {
+    "depth": "#1F3536",
+    "abyss": "#182829",
+    "night": "#0D1A1C",
+    "legacyAliases": { "forest": "depth (legacy name, prefer --mm-depth)", "dark": "abyss (legacy name, prefer --mm-abyss)" }
+  },
+  "accentSet": {
+    "$description": "Traffic-key / data-viz accent colors, distinct from the Revenue Health Matrix's own 5 system colors in matrix-system-colors.json.",
+    "green": "#7DC855",
+    "amber": "#F5A623",
+    "red": "#F05223 (= ember)",
+    "purple": "#B06FD8"
+  },
+  "rulesAndShadows": {
+    "rule": "rgba(26, 40, 40, 0.14)",
+    "ruleLight": "rgba(255, 254, 250, 0.12)",
+    "shadowPaper": "0 1px 0 rgba(26, 40, 40, 0.04), 0 2px 6px rgba(26, 40, 40, 0.04)"
   }
 }
